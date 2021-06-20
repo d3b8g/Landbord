@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Landbord</string>
+    <string name="title_home">Главная</string>
+    <string name="title_income">Доход</string>
+    <string name="title_add">Добавить</string>
+    <string name="title_statistic">Статистика</string>
+    <string name="title_test_flat">Тест Квартира ул. Пушкина 13-5</string>
+</resources>

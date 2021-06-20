@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Landbord</string>
+    <string name="title_home">Home</string>
+    <string name="title_income">Income</string>
+    <string name="title_add">Add</string>
+    <string name="title_statistic">Statistic</string>
+    <string name="title_test_flat">Test Flat Street Pushkin 13-5</string>
+</resources>
