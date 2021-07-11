@@ -1,28 +1,32 @@
-package net.d3b8g.landbord.database
+package net.d3b8g.landbord.database.Booking
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import net.d3b8g.landbord.components.Converters
+import net.d3b8g.landbord.database.Flat.FlatData
 
-@Database(entities = [FlatData::class], version = 1, exportSchema = false)
-abstract class FlatDatabase : RoomDatabase() {
+@Database(entities = [BookingData::class, FlatData::class], version = 2, exportSchema = false)
+@TypeConverters(Converters::class)
+abstract class BookingDatabase : RoomDatabase() {
 
-    abstract val flatDatabaseDao: FlatDatabaseDao
+    abstract val bookedDatabaseDao: BookingDatabaseDao
+
 
     companion object {
-
         @Volatile
-        private var INSTANCE: FlatDatabase? = null
+        private var INSTANCE: BookingDatabase? = null
 
-        fun getInstance(ct: Context): FlatDatabase {
+        fun getInstance(ct: Context): BookingDatabase {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         ct.applicationContext,
-                        FlatDatabase::class.java,
+                        BookingDatabase::class.java,
                         "flat_database"
                     )
                         .fallbackToDestructiveMigration()

@@ -1,16 +1,16 @@
 package net.d3b8g.landbord
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.d3b8g.landbord.database.FlatData
-import net.d3b8g.landbord.database.FlatDatabase
+import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 //        lifecycleScope.launch {
+//            //removeDB()
 //            testInsert()
 //        }
 
@@ -32,14 +33,32 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
+        PreferenceManager.getDefaultSharedPreferences(this).apply {
+            if(!getBoolean("have_flats", false)) {
+                findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_add)
+                navView.visibility = View.GONE
+            }
+        }
     }
 
-    suspend fun testInsert() = withContext(Dispatchers.IO) {
-        val db = FlatDatabase.getInstance(applicationContext).flatDatabaseDao
-        db.insert(FlatData(
-            flatId = 0,
-            flatName = "TestData_Flat_0",
-            flatSummary = "Same about this flat in test data"
-        ))
+    override fun onBackPressed() {
+        PreferenceManager.getDefaultSharedPreferences(this).apply {
+            if (getBoolean("have_flats", false)) {
+                super.onBackPressed()
+            } else {
+                Snackbar.make(binding.root, R.string.no_data_register, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.close_app) {
+                        finishAffinity()
+                    }
+                    .show()
+            }
+        }
     }
+
+    suspend fun removeDB() = withContext(Dispatchers.IO) {
+        val db = FlatDatabase.getInstance(applicationContext).flatDatabaseDao
+        db.clear()
+    }
+
+
 }

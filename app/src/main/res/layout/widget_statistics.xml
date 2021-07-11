@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:weightSum="2"
+            android:weightSum="3"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -42,7 +42,7 @@
                 android:text="Занятно в июне:"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="2"/>
             <TextView
                 android:textSize="14sp"
                 android:text="6 из 30 дней"
@@ -51,17 +51,19 @@
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
-            android:weightSum="2"
+            android:weightSum="3"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/booked_in_tt"
                 android:textSize="14sp"
-                android:text="Забронированно в июне:"
+                android:text="Забронировано в июне:"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="2"/>
             <TextView
+                android:id="@+id/booked_in_count"
                 android:textSize="14sp"
                 android:text="15 из 30 дней"
                 android:layout_width="0dp"

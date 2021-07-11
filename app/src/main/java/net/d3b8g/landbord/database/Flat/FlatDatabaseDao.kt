@@ -1,6 +1,5 @@
-package net.d3b8g.landbord.database
+package net.d3b8g.landbord.database.Flat
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -21,6 +20,9 @@ interface FlatDatabaseDao {
     fun clear()
 
     @Query("SELECT * FROM user_flat_info ORDER BY flatId DESC")
-    fun getAllFlats(): LiveData<List<FlatData>>
+    fun getAllFlats(): List<FlatData>
+
+    @Query("SELECT flat_name FROM user_flat_info ORDER BY flatId DESC")
+    fun getAllFlatsTitle(): List<String>
 }
 

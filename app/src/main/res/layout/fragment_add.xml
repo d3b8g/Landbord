@@ -1,16 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <EditText
-        android:id="@+id/flat_name"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/add_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/flat_summary"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/add_header_title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/add_flat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageButton
+            android:id="@+id/add_info"
+            android:background="@drawable/ic_info_24"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_height="24dp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@id/add_header"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/colorGray"
         android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/add_header"
+        android:layout_above="@+id/import_old_bd"
+        android:padding="16dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/filledNameField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_label_24"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fieldName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="32"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="6dp"
+                android:id="@+id/filledAddressField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_baseline_map_24"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/address">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fieldAddress"
+                    android:maxLength="128"
+                    android:maxLines="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="6dp"
+                android:id="@+id/filledLinkField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_link_24"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/link_to_ad">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fieldLink"
+                    android:maxLines="1"
+                    android:maxLength="256"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="6dp"
+                android:id="@+id/filledNotesField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_notes_24"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/note">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fieldNotes"
+                    android:maxLength="1024"
+                    android:maxLines="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:visibility="gone"
+                android:textSize="14sp"
+                android:drawableStart="@drawable/ic_lib_add_24"
+                android:textAllCaps="false"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:text="@string/add"
+                android:id="@+id/add_new_flat"
+                android:layout_width="160dp"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/import_old_bd"
+        android:text="@string/import_bd"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-</LinearLayout>
+</RelativeLayout>

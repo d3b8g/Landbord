@@ -1,4 +1,4 @@
-package net.d3b8g.landbord.database
+package net.d3b8g.landbord.database.Flat
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -12,6 +12,14 @@ data class FlatData(
     @ColumnInfo(name = "flat_name")
     var flatName: String,
 
-    @ColumnInfo(name = "flat_summary")
-    var flatSummary: String
+    @ColumnInfo(name = "flat_address")
+    var flatAddress: String,
+
+    @ColumnInfo(name = "flat_link")
+    var flatLink: String?,
+
+    @ColumnInfo(name = "flat_notes")
+    var flatNotes: String?,
+
+
 )

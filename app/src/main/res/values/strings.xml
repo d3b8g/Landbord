@@ -4,5 +4,19 @@
     <string name="title_income">Income</string>
     <string name="title_add">Add</string>
     <string name="title_statistic">Statistic</string>
-    <string name="title_test_flat">Test Flat Street Pushkin 13-5</string>
+    <string name="title_test_flat">Test Flat Street Pushkin 13</string>
+    <string name="booked_in">"Booked in "</string>
+    <string name="of">of</string>
+    <string name="add_flat">Adding flat</string>
+    <string name="import_bd">Import</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="link_to_ad">Link to ad or post</string>
+    <string name="note">Note</string>
+    <string name="close_app">"Close app "</string>
+    <string name="no_data_register">You have no completed data</string>
+    <string name="add">Add</string>
+    <string name="incorrect_link">Incorrect link</string>
+    <string name="add_info_dialog">You do not have any apartments added to the application. Add information about the apartment so that the application will bring you benefit and comfort.</string>
+    <string name="info">Info</string>
 </resources>

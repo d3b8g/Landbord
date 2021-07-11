@@ -5,5 +5,19 @@
     <string name="title_income">Доход</string>
     <string name="title_add">Добавить</string>
     <string name="title_statistic">Статистика</string>
-    <string name="title_test_flat">Тест Квартира ул. Пушкина 13-5</string>
+    <string name="title_test_flat">Тест Квартира ул. Пушкина 13 5</string>
+    <string name="booked_in">Забронировано в</string>
+    <string name="of">из</string>
+    <string name="add_flat">Добавление квартиры</string>
+    <string name="import_bd">Импорт</string>
+    <string name="name">Название</string>
+    <string name="address">Адрес</string>
+    <string name="link_to_ad">Ссылка на объявление</string>
+    <string name="note">Заметки</string>
+    <string name="close_app">Закрыть приложение</string>
+    <string name="no_data_register">Есть несохраненные данные</string>
+    <string name="add">Добавить</string>
+    <string name="add_info_dialog">У вас отсутствуют добавленные квартиры в приложение. Добавьте информацию о квартире, чтобы приложение принесло вам пользу и комфорт.</string>
+    <string name="incorrect_link">Некорректная ссылка</string>
+    <string name="info">Информация</string>
 </resources>
