@@ -66,8 +66,6 @@ class HomeFragment : Fragment() {
             }
         })
 
-
-
         dropDownFlat.setOnClickListener { listPopupWindow.show() }
 
         return root

@@ -19,4 +19,5 @@
     <string name="incorrect_link">Incorrect link</string>
     <string name="add_info_dialog">You do not have any apartments added to the application. Add information about the apartment so that the application will bring you benefit and comfort.</string>
     <string name="info">Info</string>
+    <string name="busy_in_tt">Busy in</string>
 </resources>

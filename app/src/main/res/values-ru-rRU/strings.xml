@@ -20,4 +20,5 @@
     <string name="add_info_dialog">У вас отсутствуют добавленные квартиры в приложение. Добавьте информацию о квартире, чтобы приложение принесло вам пользу и комфорт.</string>
     <string name="incorrect_link">Некорректная ссылка</string>
     <string name="info">Информация</string>
+    <string name="busy_in_tt">Занятно в</string>
 </resources>

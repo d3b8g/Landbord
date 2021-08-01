@@ -14,7 +14,6 @@
         android:textColor="@color/black"
         android:textAllCaps="false"
         android:drawableEnd="@drawable/ic_drop_down"
-        android:text="@{}"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_width="match_parent"
