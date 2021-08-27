@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import net.d3b8g.landbord.database.Booking.BookingData
 
-@Database(entities = [BookingData::class, FlatData::class], version = 2, exportSchema = false)
+@Database(entities = [BookingData::class, FlatData::class], version = 1, exportSchema = false)
 abstract class FlatDatabase : RoomDatabase() {
 
     abstract val flatDatabaseDao: FlatDatabaseDao

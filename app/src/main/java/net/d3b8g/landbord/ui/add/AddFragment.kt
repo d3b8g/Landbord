@@ -20,6 +20,7 @@ import net.d3b8g.landbord.R
 import net.d3b8g.landbord.database.Flat.FlatData
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentAddBinding
+import java.net.URL
 
 class AddFragment : Fragment() {
     private lateinit var addViewModel: AddViewModel
@@ -78,7 +79,8 @@ class AddFragment : Fragment() {
     }
 
     private fun canShowButton() {
-        if(binding.fieldName.text!!.isNotEmpty() && binding.fieldAddress.text!!.isNotEmpty())
+        if(binding.fieldName.text!!.isNotEmpty()
+            && binding.fieldAddress.text!!.isNotEmpty())
             binding.addNewFlat.visibility = View.VISIBLE
         else
             binding.addNewFlat.visibility = View.GONE
@@ -107,5 +109,4 @@ class AddFragment : Fragment() {
             )
         )
     }
-
 }

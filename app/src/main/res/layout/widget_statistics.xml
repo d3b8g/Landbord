@@ -18,7 +18,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"/>
         <TextView
-            android:paddingLeft="6dp"
+            android:textColor="@color/black"
+            android:paddingStart="6dp"
             android:gravity="center|left"
             android:textSize="18sp"
             android:textStyle="bold"

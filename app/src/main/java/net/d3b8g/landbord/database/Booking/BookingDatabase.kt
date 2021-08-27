@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import net.d3b8g.landbord.components.Converters
 import net.d3b8g.landbord.database.Flat.FlatData
 
-@Database(entities = [BookingData::class, FlatData::class], version = 2, exportSchema = false)
+@Database(entities = [BookingData::class, FlatData::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class BookingDatabase : RoomDatabase() {
 

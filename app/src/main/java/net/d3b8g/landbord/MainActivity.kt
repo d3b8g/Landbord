@@ -3,13 +3,17 @@ package net.d3b8g.landbord
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.d3b8g.landbord.database.Booking.BookingData
+import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.ActivityMainBinding
 
@@ -23,10 +27,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        lifecycleScope.launch {
-//            //removeDB()
-//            testInsert()
-//        }
+        lifecycleScope.launch {
+            //removeDB()
+            //insertBooking()
+        }
 
         val navView: BottomNavigationView = binding.navView
 
@@ -60,5 +64,17 @@ class MainActivity : AppCompatActivity() {
         db.clear()
     }
 
+    suspend fun insertBooking() = withContext(Dispatchers.IO) {
+        val db = BookingDatabase.getInstance(applicationContext).bookedDatabaseDao
+        db.insert(BookingData(
+            id = 0,
+            bookingDate = "2021-8-4",
+            deposit = 3540,
+            username = "Pavel Milkov",
+            userPhone = 89062188832,
+            daysBooked = 4,
+            bookingChatLink = ""
+        ))
+    }
 
 }

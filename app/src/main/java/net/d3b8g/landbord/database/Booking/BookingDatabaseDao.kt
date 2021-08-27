@@ -15,10 +15,10 @@ interface BookingDatabaseDao {
     @Update
     fun update(data: BookingData)
 
-    @Query("SELECT * from booking WHERE booking_date = :date")
-    fun getByDate(date: Date) : BookingData
+    @Query("SELECT * from booking WHERE booking_date = :date LIMIT 1")
+    fun getByDate(date: String): BookingData
 
     @Query("SELECT * from booking WHERE booking_date BETWEEN :dateStart AND :dateEnd")
-    fun getListByDate(dateStart: Date, dateEnd: Date) : List<BookingData>
+    fun getListByDate(dateStart: Date, dateEnd: Date): List<BookingData>
 
 }

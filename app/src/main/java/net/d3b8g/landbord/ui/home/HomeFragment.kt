@@ -1,6 +1,8 @@
 package net.d3b8g.landbord.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +15,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentHomeBinding
 import net.d3b8g.landbord.widgets.statistic.StatisticFragment
+import java.text.DateFormatSymbols
+import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -30,8 +35,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val db = FlatDatabase.getInstance(requireContext()).flatDatabaseDao
-        val viewModelFactory = HomeViewModelFactory(db, requireActivity().application)
+        val db_flat = FlatDatabase.getInstance(requireContext()).flatDatabaseDao
+        val db_booking = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
+        val viewModelFactory = HomeViewModelFactory(db_flat, db_booking, requireActivity().application)
         homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -68,7 +74,33 @@ class HomeFragment : Fragment() {
 
         dropDownFlat.setOnClickListener { listPopupWindow.show() }
 
+        binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            binding.tvDate.text = convertDate(month, dayOfMonth)
+            homeViewModel.getBookingData("${year}-${month}-${dayOfMonth}").observe(viewLifecycleOwner, {
+                Log.e("RRR", "${it.userPhone}")
+            })
+        }
+
         return root
+    }
+
+    private fun convertDate(month: Int, day: Int) = when (Locale.getDefault().displayLanguage) {
+        "русский" -> "$day " + when (month + 1) {
+            1 -> "Января"
+            2 -> "Февраля"
+            3 -> "Марта"
+            4 -> "Апреля"
+            5 -> "Мая"
+            6 -> "Июня"
+            7 -> "Июля"
+            8 -> "Августа"
+            9 -> "Сентрября"
+            10 -> "Октября"
+            11 -> "Ноября"
+            12 -> "Декабря"
+            else -> "Января"
+        }
+        else -> "$day of ${DateFormatSymbols().months[month]}"
     }
 
     override fun onDestroyView() {

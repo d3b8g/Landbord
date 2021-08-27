@@ -1,24 +1,28 @@
 package net.d3b8g.landbord.ui.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import net.d3b8g.landbord.database.Booking.BookingData
+import net.d3b8g.landbord.database.Booking.BookingDatabaseDao
 import net.d3b8g.landbord.database.Flat.FlatData
 import net.d3b8g.landbord.database.Flat.FlatDatabaseDao
 import net.d3b8g.landbord.ui.home.HomeFragment.Companion.FLAT_LAST_KEY
 
-class HomeViewModel(private val database: FlatDatabaseDao, application: Application) : AndroidViewModel(application) {
+class HomeViewModel(private val databaseFlat: FlatDatabaseDao,
+                    private val databaseBooking: BookingDatabaseDao,
+                    application: Application) : AndroidViewModel(application) {
 
     var flat = MutableLiveData<FlatData?>().apply {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 PreferenceManager.getDefaultSharedPreferences(application).apply {
-                    postValue(database.get(getInt(FLAT_LAST_KEY, 1)))
+                    postValue(databaseFlat.get(getInt(FLAT_LAST_KEY, 1)))
                 }
             }
         }
@@ -27,8 +31,18 @@ class HomeViewModel(private val database: FlatDatabaseDao, application: Applicat
     var flatList = MutableLiveData<List<String>>().apply {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                postValue(database.getAllFlatsTitle())
+                postValue(databaseFlat.getAllFlatsTitle())
             }
         }
     }
+
+
+    fun getBookingData(date: String) = MutableLiveData<BookingData>().apply {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                postValue(databaseBooking.getByDate(date))
+            }
+        }
+    }
+
 }
