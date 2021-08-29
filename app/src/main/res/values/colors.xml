@@ -8,5 +8,6 @@
     <color name="colorAccent">#536DFE</color>
     <color name="colorBlueStandard">#5488D6</color>
     <color name="colorGray">#f2f3f5</color>
+    <color name="colorMoreGray">@android:color/darker_gray</color>
     <color name="colorRed">#ff4040</color>
 </resources>

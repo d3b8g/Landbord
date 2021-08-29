@@ -12,20 +12,24 @@ import android.widget.Button
 import android.widget.ListPopupWindow
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentHomeBinding
+import net.d3b8g.landbord.widgets.add_info.AddInfoFragment
+import net.d3b8g.landbord.widgets.add_info.AddInfoViewModel
 import net.d3b8g.landbord.widgets.statistic.StatisticFragment
 import java.text.DateFormatSymbols
 import java.util.*
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(){
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
+    private val model: AddInfoViewModel by activityViewModels()
 
     private val binding get() = _binding!!
 
@@ -77,11 +81,28 @@ class HomeFragment : Fragment() {
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             binding.tvDate.text = convertDate(month, dayOfMonth)
             homeViewModel.getBookingData("${year}-${month}-${dayOfMonth}").observe(viewLifecycleOwner, {
-                Log.e("RRR", "${it.userPhone}")
+                if(it == null) {
+                    generateAddWidget()
+                }
             })
         }
 
+        model.widgetSetState.observe(viewLifecycleOwner, {
+            if(it) {
+                binding.widgetAddInfo.visibility = View.GONE
+            }
+        })
+
         return root
+    }
+
+    private fun generateAddWidget() {
+        binding.widgetInfo.visibility = View.GONE
+
+        if(binding.widgetAddInfo.visibility == View.GONE) binding.widgetAddInfo.visibility = View.VISIBLE
+        parentFragmentManager.beginTransaction()
+            .add(binding.widgetAddInfo.id, AddInfoFragment())
+            .commit()
     }
 
     private fun convertDate(month: Int, day: Int) = when (Locale.getDefault().displayLanguage) {

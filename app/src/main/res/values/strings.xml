@@ -20,4 +20,13 @@
     <string name="add_info_dialog">You do not have any apartments added to the application. Add information about the apartment so that the application will bring you benefit and comfort.</string>
     <string name="info">Info</string>
     <string name="busy_in_tt">Busy in</string>
+    <string name="title_add_info">Add info</string>
+    <string name="date">Date</string>
+    <string name="deposit">Deposit</string>
+    <string name="username">Username</string>
+    <string name="phone">Phone</string>
+    <string name="date_to">Date to</string>
+    <string name="chat_link">Chat link</string>
+    <string name="empty_data">You haven\'t user\'s booking there. Add info?</string>
+    <string name="date_early_error">Date cannot be early than now</string>
 </resources>

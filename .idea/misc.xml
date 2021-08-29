@@ -3,10 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1553966189856957" />
+        <entry key="app/src/main/res/drawable/ic_baseline_query_stats_24.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_calendar_24.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_close.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_label_24.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_money.xml" value="0.37552083333333336" />
+        <entry key="app/src/main/res/drawable/ic_write.xml" value="0.21666666666666667" />
         <entry key="app/src/main/res/drawable/widget_shape.xml" value="0.34427083333333336" />
         <entry key="app/src/main/res/layout-v28/fragment_home.xml" value="0.240625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.291213768115942" />
+        <entry key="app/src/main/res/layout/fragment_add.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/fragment_add_info.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/widget_add_info.xml" value="0.375" />
         <entry key="app/src/main/res/layout/widget_statistics.xml" value="0.291213768115942" />
       </map>
     </option>

@@ -44,5 +44,4 @@ class HomeViewModel(private val databaseFlat: FlatDatabaseDao,
             }
         }
     }
-
 }

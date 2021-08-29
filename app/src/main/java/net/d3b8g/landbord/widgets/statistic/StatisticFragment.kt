@@ -17,7 +17,7 @@ class StatisticFragment : Fragment(R.layout.widget_statistics) {
     private lateinit var homeViewModel: StatisticViewModel
     lateinit var binding: WidgetStatisticsBinding
 
-    val maxDaysMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
+    private val maxDaysMonth = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
