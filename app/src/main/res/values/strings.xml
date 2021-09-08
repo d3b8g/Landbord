@@ -29,4 +29,7 @@
     <string name="chat_link">Chat link</string>
     <string name="empty_data">You haven\'t user\'s booking there. Add info?</string>
     <string name="date_early_error">Date cannot be early than now</string>
+    <string name="update">Update</string>
+    <string name="field_empty">Field is empty</string>
+    <string name="invalid_url">Invalid URL</string>
 </resources>

@@ -1,8 +1,6 @@
 package net.d3b8g.landbord.ui.home
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.DateStringConverter.Companion.convertDateToPattern
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentHomeBinding
@@ -39,9 +38,9 @@ class HomeFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View {
 
-        val db_flat = FlatDatabase.getInstance(requireContext()).flatDatabaseDao
-        val db_booking = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
-        val viewModelFactory = HomeViewModelFactory(db_flat, db_booking, requireActivity().application)
+        val dbFlat = FlatDatabase.getInstance(requireContext()).flatDatabaseDao
+        val dbBooking = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
+        val viewModelFactory = HomeViewModelFactory(dbFlat, dbBooking, requireActivity().application)
         homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -80,8 +79,9 @@ class HomeFragment : Fragment(){
 
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             binding.tvDate.text = convertDate(month, dayOfMonth)
-            homeViewModel.getBookingData("${year}-${month}-${dayOfMonth}").observe(viewLifecycleOwner, {
+            homeViewModel.getBookingData("${year}-${month+1}-${dayOfMonth}").observe(viewLifecycleOwner, {
                 if(it == null) {
+                    model.chosenCalendarDate.value = convertDateToPattern("${year}-${month+1}-${dayOfMonth}")
                     generateAddWidget()
                 }
             })
