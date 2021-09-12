@@ -10,7 +10,6 @@ import net.d3b8g.landbord.R
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.databinding.WidgetStatisticsBinding
 import java.util.*
-import java.util.concurrent.locks.LockSupport
 
 class StatisticFragment : Fragment(R.layout.widget_statistics) {
 
@@ -29,6 +28,7 @@ class StatisticFragment : Fragment(R.layout.widget_statistics) {
         homeViewModel = ViewModelProvider(this, viewModelFactory).get(StatisticViewModel::class.java)
 
         homeViewModel.statisticsBookingData.observe(viewLifecycleOwner, {
+            Log.e("RRR", it.count().toString())
             binding.apply {
                 bookedInTt.text = "${getString(R.string.booked_in)} ${correctMonthName()}:"
                 bookedInCount.text = counterDays(it.count())
@@ -48,6 +48,4 @@ class StatisticFragment : Fragment(R.layout.widget_statistics) {
     }
 
     private fun counterDays(count: Int) : String = "$count ${getString(R.string.of)} $maxDaysMonth"
-
-
 }

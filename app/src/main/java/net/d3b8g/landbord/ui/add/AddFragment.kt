@@ -20,7 +20,6 @@ import net.d3b8g.landbord.R
 import net.d3b8g.landbord.database.Flat.FlatData
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentAddBinding
-import java.net.URL
 
 class AddFragment : Fragment() {
     private lateinit var addViewModel: AddViewModel

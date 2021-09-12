@@ -2,8 +2,6 @@ package net.d3b8g.landbord.widgets.add_info
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.PatternMatcher
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -19,8 +17,6 @@ import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.databinding.WidgetAddInfoBinding
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class AddInfoFragment : Fragment(R.layout.widget_add_info) {
@@ -87,7 +83,7 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
             (currentDate - SimpleDateFormat("yyyy-MM-dd").parse(calendarDate)!!.time) / 86400
         } else 0
 
-        db.insert(
+        val insertData = db.insert(
             BookingData(
                 id = 0,
                 bookingDate = today,
@@ -98,6 +94,10 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
                 bookingChatLink = binding.fieldChatLink.text!!.toString()
             )
         )
+
+        withContext(Dispatchers.Main) {
+            model.shouldUpdateWidget.value = (insertData == 1.toLong())
+        }
     }
 
     private fun canUpdateDateInfo(): Boolean {
@@ -136,7 +136,8 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
             ""
         }
 
-        binding.filledChatLinkField.error = if (binding.fieldChatLink.text!!.matches(Patterns.WEB_URL.toRegex())) {
+        binding.filledChatLinkField.error = if (binding.fieldChatLink.text!!.toString().isNotEmpty() &&
+            Patterns.WEB_URL.matcher(binding.fieldChatLink.text!!.toString()).matches()) {
             getString(R.string.invalid_url)
         } else ""
 

@@ -8,4 +8,6 @@ class AddInfoViewModel : ViewModel() {
     val widgetSetState = MutableLiveData<Boolean>()
 
     val chosenCalendarDate = MutableLiveData<String>()
+
+    val shouldUpdateWidget = MutableLiveData<Boolean>()
 }

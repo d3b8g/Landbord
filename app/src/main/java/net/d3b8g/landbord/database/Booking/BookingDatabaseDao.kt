@@ -10,7 +10,7 @@ import java.util.*
 interface BookingDatabaseDao {
 
     @Insert
-    fun insert(data: BookingData)
+    fun insert(data: BookingData): Long
 
     @Update
     fun update(data: BookingData)
@@ -19,6 +19,6 @@ interface BookingDatabaseDao {
     fun getByDate(date: String): BookingData
 
     @Query("SELECT * from booking WHERE booking_date BETWEEN :dateStart AND :dateEnd")
-    fun getListByDate(dateStart: Date, dateEnd: Date): List<BookingData>
+    fun getListByDate(dateStart: String, dateEnd: String): List<BookingData>
 
 }

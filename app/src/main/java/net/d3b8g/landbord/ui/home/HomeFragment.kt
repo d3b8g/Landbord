@@ -1,9 +1,7 @@
 package net.d3b8g.landbord.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -12,47 +10,47 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
-import net.d3b8g.landbord.components.DateStringConverter.Companion.convertDateToPattern
+import net.d3b8g.landbord.components.Converter.convertDateToPattern
+import net.d3b8g.landbord.components.Converter.convertUnixToDate
+import net.d3b8g.landbord.components.Converter.getTodayDate
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentHomeBinding
+import net.d3b8g.landbord.models.BookingInfoModel
 import net.d3b8g.landbord.widgets.add_info.AddInfoFragment
 import net.d3b8g.landbord.widgets.add_info.AddInfoViewModel
+import net.d3b8g.landbord.widgets.booking.BookingInfoFragment
+import net.d3b8g.landbord.widgets.booking.BookingInfoViewModel
 import net.d3b8g.landbord.widgets.statistic.StatisticFragment
-import java.text.DateFormatSymbols
-import java.util.*
 
-class HomeFragment : Fragment(){
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var homeViewModel: HomeViewModel
-    private var _binding: FragmentHomeBinding? = null
-    private val model: AddInfoViewModel by activityViewModels()
+    private lateinit var binding: FragmentHomeBinding
+    private val modelAddInfo: AddInfoViewModel by activityViewModels()
+    private val modelDateInfo: BookingInfoViewModel by activityViewModels()
 
-    private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding = FragmentHomeBinding.bind(view)
 
+        // Initialize BD to call in ModelView
         val dbFlat = FlatDatabase.getInstance(requireContext()).flatDatabaseDao
         val dbBooking = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
         val viewModelFactory = HomeViewModelFactory(dbFlat, dbBooking, requireActivity().application)
         homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
+        // UI components
         val dropDownFlat: Button = binding.flatBtn
-
-        homeViewModel.flat.observe(viewLifecycleOwner, {
-            dropDownFlat.text = it?.flatName
-        })
-
         val listPopupWindow = ListPopupWindow(requireContext(), null, R.attr.listPopupWindowStyle)
+
+        dropDownFlat.text = homeViewModel.flat.value?.flatName
         listPopupWindow.anchorView = dropDownFlat
 
         homeViewModel.flatList.observe(viewLifecycleOwner, {
@@ -75,58 +73,73 @@ class HomeFragment : Fragment(){
             }
         })
 
-        dropDownFlat.setOnClickListener { listPopupWindow.show() }
+        homeViewModel.getBookingData(getTodayDate()).observe(viewLifecycleOwner, {
+            if(it != null) {
+                generateInfoWidget()
+                lifecycleScope.launch { setBookingInfo(getTodayDate()) }
+            }
+        })
 
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            binding.tvDate.text = convertDate(month, dayOfMonth)
-            homeViewModel.getBookingData("${year}-${month+1}-${dayOfMonth}").observe(viewLifecycleOwner, {
+            val correctDateFormat = convertDateToPattern("${year}-${month+1}-${dayOfMonth}")
+            homeViewModel.getBookingData(correctDateFormat).observe(viewLifecycleOwner, {
                 if(it == null) {
-                    model.chosenCalendarDate.value = convertDateToPattern("${year}-${month+1}-${dayOfMonth}")
+                    modelAddInfo.chosenCalendarDate.value = correctDateFormat
                     generateAddWidget()
+                } else {
+                    if(binding.widgetInfo.visibility == View.GONE) binding.widgetInfo.visibility = View.VISIBLE
+
+                    lifecycleScope.launch { setBookingInfo("${year}-${month+1}-${dayOfMonth}") }
                 }
             })
         }
 
-        model.widgetSetState.observe(viewLifecycleOwner, {
+        modelAddInfo.widgetSetState.observe(viewLifecycleOwner, {
             if(it) {
-                binding.widgetAddInfo.visibility = View.GONE
+                binding.widgetInfo.visibility = View.GONE
             }
         })
 
-        return root
+        modelAddInfo.shouldUpdateWidget.observe(viewLifecycleOwner, {
+            if(it) {
+                generateInfoWidget()
+                val pickedDate = convertUnixToDate(binding.calendarView.date)
+                lifecycleScope.launch { setBookingInfo(pickedDate) }
+            }
+        })
+
+        dropDownFlat.setOnClickListener { listPopupWindow.show() }
     }
 
     private fun generateAddWidget() {
-        binding.widgetInfo.visibility = View.GONE
-
-        if(binding.widgetAddInfo.visibility == View.GONE) binding.widgetAddInfo.visibility = View.VISIBLE
         parentFragmentManager.beginTransaction()
-            .add(binding.widgetAddInfo.id, AddInfoFragment())
+            .replace(binding.widgetInfo.id, AddInfoFragment())
             .commit()
+
+        if(binding.widgetInfo.visibility == View.GONE) binding.widgetInfo.visibility = View.VISIBLE
     }
 
-    private fun convertDate(month: Int, day: Int) = when (Locale.getDefault().displayLanguage) {
-        "русский" -> "$day " + when (month + 1) {
-            1 -> "Января"
-            2 -> "Февраля"
-            3 -> "Марта"
-            4 -> "Апреля"
-            5 -> "Мая"
-            6 -> "Июня"
-            7 -> "Июля"
-            8 -> "Августа"
-            9 -> "Сентрября"
-            10 -> "Октября"
-            11 -> "Ноября"
-            12 -> "Декабря"
-            else -> "Января"
+    private fun generateInfoWidget() = parentFragmentManager.beginTransaction()
+            .replace(binding.widgetInfo.id, BookingInfoFragment())
+            .commit()
+
+    private suspend fun setBookingInfo(date: String) = withContext(Dispatchers.IO) {
+        val connectToBookingBase = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
+        val dataBooking = connectToBookingBase.getByDate(date)
+
+        if(homeViewModel.getBookingData(date).value != null) {
+            binding.widgetInfo.visibility = View.VISIBLE
+            modelDateInfo.widgetModel.value = BookingInfoModel(
+                date = date,
+                bookedBy = dataBooking.username,
+                phone = dataBooking.userPhone,
+                deposit = dataBooking.deposit
+            )
+        } else {
+            withContext(Dispatchers.Main) {
+                binding.widgetInfo.visibility = View.GONE
+            }
         }
-        else -> "$day of ${DateFormatSymbols().months[month]}"
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {

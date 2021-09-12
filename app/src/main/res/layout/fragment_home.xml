@@ -13,9 +13,10 @@
         android:textColor="@color/black"
         android:textAllCaps="false"
         android:drawableEnd="@drawable/ic_drop_down"
+        android:layout_gravity="center"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <androidx.fragment.app.FragmentContainerView
@@ -36,50 +37,8 @@
                 android:id="@+id/calendar_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <LinearLayout
-                android:id="@+id/widget_info"
-                android:background="@drawable/widget_shape"
-                android:orientation="vertical"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:padding="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:padding="4dp"
-                    android:id="@+id/header_date"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:src="@drawable/ic_calendar_28"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"/>
-                    <TextView
-                        android:layout_marginStart="8dp"
-                        android:id="@+id/tv_date"
-                        android:text="3 августа"
-                        android:textStyle="bold"
-                        android:textSize="18dp"
-                        android:textColor="@color/black"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-                <TextView
-                    android:text="Забронировано: Павел Безверхий"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="Телефон: 89062188831"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:text="Залог: 2500"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/widget_add_info"
+                android:id="@+id/widget_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <LinearLayout
