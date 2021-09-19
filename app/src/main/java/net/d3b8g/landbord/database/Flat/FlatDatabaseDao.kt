@@ -7,6 +7,7 @@ import androidx.room.Update
 
 @Dao
 interface FlatDatabaseDao {
+
     @Insert
     fun insert(flat: FlatData)
 
@@ -17,7 +18,7 @@ interface FlatDatabaseDao {
     fun get(key: Int): FlatData
 
     @Query("DELETE FROM user_flat_info")
-    fun clear()
+    fun deleteAll()
 
     @Query("SELECT * FROM user_flat_info ORDER BY flatId DESC")
     fun getAllFlats(): List<FlatData>

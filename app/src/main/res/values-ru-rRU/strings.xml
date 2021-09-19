@@ -21,4 +21,21 @@
     <string name="incorrect_link">Некорректная ссылка</string>
     <string name="info">Информация</string>
     <string name="busy_in_tt">Занятно в</string>
+    <string name="title_add_info">Добавить информацию</string>
+    <string name="date">Дата</string>
+    <string name="deposit">Залог</string>
+    <string name="tenant">Арендант</string>
+    <string name="phone">Телефон</string>
+    <string name="date_to">Снимает до</string>
+    <string name="chat_link">Ссылка на чат</string>
+    <string name="empty_data">У вас нет записи на сегодня. Добавить?</string>
+    <string name="date_early_error">Дата не может быть раньше, чем сейчас</string>
+    <string name="update">Обновить</string>
+    <string name="field_empty">Пустое поле</string>
+    <string name="invalid_url">Некорректная ссылка</string>
+    <string name="notification">Уведомление</string>
+    <string name="dates_busy">Эта дата занята</string>
+    <string name="generate_demo">Сгенерировать демо приложение</string>
+    <string name="open_chat">Открыть чат</string>
+    <string name="image_plug">Изображение</string>
 </resources>

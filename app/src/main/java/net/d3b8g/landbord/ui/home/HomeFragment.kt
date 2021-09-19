@@ -36,13 +36,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val modelAddInfo: AddInfoViewModel by activityViewModels()
     private val modelDateInfo: BookingInfoViewModel by activityViewModels()
 
+    private val dbFlat by lazy { initFlat() }
+    private val dbBooking by lazy { initBooking() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentHomeBinding.bind(view)
 
-        // Initialize BD to call in ModelView
-        val dbFlat = FlatDatabase.getInstance(requireContext()).flatDatabaseDao
-        val dbBooking = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
         val viewModelFactory = HomeViewModelFactory(dbFlat, dbBooking, requireActivity().application)
         homeViewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
@@ -50,10 +49,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val dropDownFlat: Button = binding.flatBtn
         val listPopupWindow = ListPopupWindow(requireContext(), null, R.attr.listPopupWindowStyle)
 
-        dropDownFlat.text = homeViewModel.flat.value?.flatName
         listPopupWindow.anchorView = dropDownFlat
 
         homeViewModel.flatList.observe(viewLifecycleOwner, {
+            dropDownFlat.text = it[0]
+
             val adapter = ArrayAdapter(requireContext(), R.layout.list_popup_window_item, it)
             listPopupWindow.setAdapter(adapter)
 
@@ -74,7 +74,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
 
         homeViewModel.getBookingData(getTodayDate()).observe(viewLifecycleOwner, {
-            if(it != null) {
+            if (it != null) {
                 generateInfoWidget()
                 lifecycleScope.launch { setBookingInfo(getTodayDate()) }
             }
@@ -83,25 +83,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val correctDateFormat = convertDateToPattern("${year}-${month+1}-${dayOfMonth}")
             homeViewModel.getBookingData(correctDateFormat).observe(viewLifecycleOwner, {
-                if(it == null) {
+                if (it == null) {
                     modelAddInfo.chosenCalendarDate.value = correctDateFormat
                     generateAddWidget()
                 } else {
-                    if(binding.widgetInfo.visibility == View.GONE) binding.widgetInfo.visibility = View.VISIBLE
-
+                    generateInfoWidget()
                     lifecycleScope.launch { setBookingInfo("${year}-${month+1}-${dayOfMonth}") }
                 }
             })
         }
 
         modelAddInfo.widgetSetState.observe(viewLifecycleOwner, {
-            if(it) {
+            if (it) {
                 binding.widgetInfo.visibility = View.GONE
             }
         })
 
         modelAddInfo.shouldUpdateWidget.observe(viewLifecycleOwner, {
-            if(it) {
+            if (it) {
                 generateInfoWidget()
                 val pickedDate = convertUnixToDate(binding.calendarView.date)
                 lifecycleScope.launch { setBookingInfo(pickedDate) }
@@ -116,7 +115,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             .replace(binding.widgetInfo.id, AddInfoFragment())
             .commit()
 
-        if(binding.widgetInfo.visibility == View.GONE) binding.widgetInfo.visibility = View.VISIBLE
+        if (binding.widgetInfo.visibility == View.GONE) binding.widgetInfo.visibility = View.VISIBLE
     }
 
     private fun generateInfoWidget() = parentFragmentManager.beginTransaction()
@@ -124,23 +123,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             .commit()
 
     private suspend fun setBookingInfo(date: String) = withContext(Dispatchers.IO) {
-        val connectToBookingBase = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
-        val dataBooking = connectToBookingBase.getByDate(date)
-
-        if(homeViewModel.getBookingData(date).value != null) {
-            binding.widgetInfo.visibility = View.VISIBLE
-            modelDateInfo.widgetModel.value = BookingInfoModel(
-                date = date,
-                bookedBy = dataBooking.username,
-                phone = dataBooking.userPhone,
-                deposit = dataBooking.deposit
-            )
-        } else {
-            withContext(Dispatchers.Main) {
-                binding.widgetInfo.visibility = View.GONE
+        val bookingData = dbBooking.getListByDate(date, date)
+        withContext(Dispatchers.Main) {
+            if (bookingData != null && bookingData.isNotEmpty()) {
+                binding.widgetInfo.visibility = View.VISIBLE
+                modelDateInfo.widgetModel.value = BookingInfoModel(
+                    date = date,
+                    bookedBy = bookingData[0].username,
+                    phone = bookingData[0].userPhone,
+                    deposit = bookingData[0].deposit
+                )
+            } else {
+                generateAddWidget()
             }
         }
     }
+
+    private fun initBooking() = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
+    private fun initFlat() = FlatDatabase.getInstance(requireContext()).flatDatabaseDao
 
     companion object {
         const val FLAT_LAST_KEY = "flat_last"

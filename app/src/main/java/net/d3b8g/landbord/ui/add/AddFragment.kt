@@ -2,9 +2,7 @@ package net.d3b8g.landbord.ui.add
 
 import android.os.Bundle
 import android.util.Patterns
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.edit
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -17,36 +15,34 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.Converter.getTodayDate
+import net.d3b8g.landbord.components.Converter.parseDateToModel
+import net.d3b8g.landbord.database.Booking.BookingData
+import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatData
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentAddBinding
 
-class AddFragment : Fragment() {
+class AddFragment : Fragment(R.layout.fragment_add) {
+
     private lateinit var addViewModel: AddViewModel
-    private var _binding: FragmentAddBinding? = null
+    private lateinit var binding: FragmentAddBinding
 
-    private val binding get() = _binding!!
+    override fun onViewCreated(view: View , savedInstanceState: Bundle?) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
         addViewModel = ViewModelProvider(this).get(AddViewModel::class.java)
-
-        _binding = FragmentAddBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        binding = FragmentAddBinding.bind(view)
 
         val nameFlat = binding.fieldName
         val addressFlat = binding.fieldAddress
         val linkFlat = binding.fieldLink
 
-        nameFlat.doOnTextChanged { _, _, _, count ->
-            if(count > 3) canShowButton()
+        nameFlat.doOnTextChanged { _ , _ , _ , _ ->
+            canShowButton()
         }
 
-        addressFlat.doOnTextChanged { _, _, _, count ->
-            if (count > 12) canShowButton()
+        addressFlat.doOnTextChanged { _ , _ , _ , _ ->
+            canShowButton()
         }
 
         binding.addNewFlat.setOnClickListener {
@@ -60,8 +56,9 @@ class AddFragment : Fragment() {
         binding.addInfo.setOnClickListener {
             showDialogInfo()
         }
-
-        return root
+        binding.generateDemo.setOnClickListener {
+            GenerateDemoApp().generateDemo()
+        }
     }
 
     private fun showDialogInfo() {
@@ -72,17 +69,15 @@ class AddFragment : Fragment() {
         dialogView.show()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun canShowButton() {
-        if(binding.fieldName.text!!.isNotEmpty()
-            && binding.fieldAddress.text!!.isNotEmpty())
+        if (binding.fieldName.text!!.length > 3
+            && binding.fieldAddress.text!!.length > 12) {
             binding.addNewFlat.visibility = View.VISIBLE
-        else
+            binding.generateDemo.visibility = View.GONE
+        } else {
             binding.addNewFlat.visibility = View.GONE
+            binding.generateDemo.visibility = View.VISIBLE
+        }
     }
 
     private fun correctRedirect() {
@@ -107,5 +102,51 @@ class AddFragment : Fragment() {
                 flatNotes = binding.fieldNotes.text!!.toString()
             )
         )
+    }
+
+    inner class GenerateDemoApp {
+
+        fun generateDemo() {
+            lifecycleScope.launch {
+                createFlatDemo()
+                createMockBooking()
+            }
+            val navigation = AddFragmentDirections.actionNavigationAddToNavigationHome()
+            findNavController().navigate(navigation)
+        }
+
+        private suspend fun createFlatDemo() = withContext(Dispatchers.IO) {
+            val db = FlatDatabase.getInstance(binding.root.context).flatDatabaseDao
+            db.insert(
+                FlatData(
+                    flatId = 0,
+                    flatName = "DemoFlat",
+                    flatAddress = "131 70th Street, New York",
+                    flatLink = "https://www.avito.ru/volgograd/kvartiry/2-k._kvartira_568_m_516_et._2201547501",
+                    flatNotes = "Dont smoke, older than 21, no for party and same event, 3 days +"
+                )
+            )
+        }
+
+        private suspend fun createMockBooking() = withContext(Dispatchers.IO) {
+
+            val db = BookingDatabase.getInstance(binding.root.context).bookedDatabaseDao
+            val yearMonth = "${parseDateToModel(getTodayDate()).year}-${parseDateToModel(getTodayDate()).month}"
+
+            for (i in 16..19) {
+                db.insert(
+                    BookingData(
+                        id = 0 ,
+                        flatId = 1,
+                        bookingDate = "${yearMonth}-$i",
+                        deposit = (1000..2000).random(),
+                        username = "Vasya Ivanov $i",
+                        userPhone = 89116487019,
+                        bookingEnd = "${yearMonth}-${i+0}",
+                        bookingChatLink = ""
+                    )
+                )
+            }
+        }
     }
 }
