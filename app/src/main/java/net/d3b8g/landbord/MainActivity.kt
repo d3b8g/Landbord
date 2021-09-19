@@ -59,22 +59,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val flatBase = FlatDatabase.getInstance(applicationContext).flatDatabaseDao
+                val bookingBase = BookingDatabase.getInstance(applicationContext).bookedDatabaseDao
+
+                flatBase.deleteAll()
+                bookingBase.deleteAll()
+            }
+        }
+        super.onDestroy()
+    }
+
     suspend fun removeDB() = withContext(Dispatchers.IO) {
         val db = FlatDatabase.getInstance(applicationContext).flatDatabaseDao
-        db.clear()
+        db.deleteAll()
     }
 
     suspend fun insertBooking() = withContext(Dispatchers.IO) {
         val db = BookingDatabase.getInstance(applicationContext).bookedDatabaseDao
         db.insert(BookingData(
             id = 0,
+            flatId = 0,
             bookingDate = "2021-8-4",
             deposit = 3540,
             username = "Pavel Milkov",
             userPhone = 89062188832,
-            daysBooked = 4,
+            bookingEnd = "2021-08-04",
             bookingChatLink = ""
         ))
     }
-
 }

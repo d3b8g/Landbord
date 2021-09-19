@@ -2,11 +2,11 @@ package net.d3b8g.landbord.widgets.statistic
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.databinding.WidgetStatisticsBinding
 import java.util.*
@@ -28,13 +28,19 @@ class StatisticFragment : Fragment(R.layout.widget_statistics) {
         homeViewModel = ViewModelProvider(this, viewModelFactory).get(StatisticViewModel::class.java)
 
         homeViewModel.statisticsBookingData.observe(viewLifecycleOwner, {
-            Log.e("RRR", it.count().toString())
             binding.apply {
+
+                var counterBusyDays = 0
+                it.forEachIndexed { index, bookingData ->
+                    val res = parseDateToModel(bookingData.bookingEnd).day.toInt() + 1 - parseDateToModel(bookingData.bookingDate).day.toInt()
+                    counterBusyDays += res
+                }
+
                 bookedInTt.text = "${getString(R.string.booked_in)} ${correctMonthName()}:"
-                bookedInCount.text = counterDays(it.count())
+                bookedInCount.text = counterDays(counterBusyDays)
 
                 busyInTt.text = "${getString(R.string.busy_in_tt)} ${correctMonthName()}:"
-                busyInCount.text = counterDays(it.count())
+                busyInCount.text = counterDays(counterBusyDays)
             }
         })
     }

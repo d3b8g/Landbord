@@ -23,7 +23,7 @@
     <string name="title_add_info">Add info</string>
     <string name="date">Date</string>
     <string name="deposit">Deposit</string>
-    <string name="username">Username</string>
+    <string name="tenant">Tenant</string>
     <string name="phone">Phone</string>
     <string name="date_to">Date to</string>
     <string name="chat_link">Chat link</string>
@@ -33,4 +33,8 @@
     <string name="field_empty">Field is empty</string>
     <string name="invalid_url">Invalid URL</string>
     <string name="notification">Notification</string>
+    <string name="dates_busy">This dates busy</string>
+    <string name="generate_demo">Generate demo for app</string>
+    <string name="open_chat">Open chat</string>
+    <string name="image_plug">Image plug</string>
 </resources>

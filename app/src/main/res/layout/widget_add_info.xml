@@ -15,14 +15,15 @@
         android:layout_height="36dp">
         <ImageView
             android:id="@+id/img_add_info"
+            android:contentDescription="@string/image_plug"
             android:src="@drawable/ic_write"
             android:layout_width="30dp"
             android:layout_height="30dp"/>
         <TextView
-            android:layout_toRightOf="@id/img_add_info"
+            android:layout_toEndOf="@id/img_add_info"
             android:textColor="@color/black"
             android:paddingStart="6dp"
-            android:gravity="center|left"
+            android:gravity="center|start"
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="@string/title_add_info"
@@ -31,6 +32,7 @@
 
         <ImageButton
             android:id="@+id/close_widget"
+            android:contentDescription="@string/image_plug"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
@@ -89,7 +91,7 @@
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_label_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="@string/username">
+            android:hint="@string/tenant">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fieldUsername"

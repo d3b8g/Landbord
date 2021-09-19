@@ -1,6 +1,8 @@
 package net.d3b8g.landbord.widgets.booking
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -18,18 +20,23 @@ class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding = WidgetBookingInfoBinding.bind(view)
 
-        model.widgetModel.observe(viewLifecycleOwner, {
-            binding.biDate.text = convertDate(parseDateToModel(it.date).month, parseDateToModel(it.date).day)
-            binding.biUser.text = "Booked by: ${it.bookedBy}"
-            binding.biPhone.text = "Phone: ${it.phone}"
-            binding.biDeposit.text = "Deposit: ${it.deposit}"
+        model.widgetModel.observe(viewLifecycleOwner, { bookingInfoModel ->
+            binding.biDate.text = convertDate(parseDateToModel(bookingInfoModel.date).month.toInt(), parseDateToModel(bookingInfoModel.date).day.toInt())
+            binding.biUser.text = "Booked by: ${bookingInfoModel.bookedBy}"
+            binding.biPhone.text = "Phone: ${bookingInfoModel.phone}"
+            binding.biDeposit.text = "Deposit: ${bookingInfoModel.deposit}"
+
+            binding.biPhone.setOnClickListener {
+                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${bookingInfoModel.phone}"))
+                startActivity(intent)
+            }
         })
     }
 
     private fun convertDate(month: Int, day: Int) = when (Locale.getDefault().displayLanguage) {
-        "русский" -> "$day " + when (month + 1) {
+        "русский" -> "$day " + when (month) {
             1 -> "Января"
             2 -> "Февраля"
             3 -> "Марта"

@@ -2,7 +2,6 @@ package net.d3b8g.landbord.widgets.statistic
 
 import android.annotation.SuppressLint
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,13 +12,12 @@ import net.d3b8g.landbord.components.Converter.getTodayDate
 import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabaseDao
-import java.text.SimpleDateFormat
 import java.util.*
 
 class StatisticViewModel(private val database: BookingDatabaseDao, application: Application) : AndroidViewModel(application) {
 
     @SuppressLint("SimpleDateFormat")
-    var statisticsBookingData = MutableLiveData<List<BookingData>>().apply {
+    val statisticsBookingData = MutableLiveData<List<BookingData>>().apply {
 
         val yearMonth = "${parseDateToModel(getTodayDate()).year}-${parseDateToModel(getTodayDate()).month}"
         val startDate = "${yearMonth}-01"

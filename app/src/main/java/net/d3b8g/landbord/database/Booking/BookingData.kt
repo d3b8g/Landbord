@@ -10,6 +10,9 @@ data class BookingData(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
 
+    @ColumnInfo(name = "flatId")
+    val flatId: Int,
+
     @ColumnInfo(name = "booking_date")
     val bookingDate: String,
 
@@ -22,8 +25,8 @@ data class BookingData(
     @ColumnInfo(name = "user_phone")
     val userPhone: Long,
 
-    @ColumnInfo(name = "count_days_booking")
-    val daysBooked: Int,
+    @ColumnInfo(name = "booking_end")
+    val bookingEnd: String,
 
     @ColumnInfo(name = "chat_link")
     val bookingChatLink: String
