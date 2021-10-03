@@ -1,13 +1,19 @@
 package net.d3b8g.landbord.widgets.booking
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.Converter.convertDate
 import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.databinding.WidgetBookingInfoBinding
 import java.text.DateFormatSymbols
@@ -23,34 +29,50 @@ class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
         binding = WidgetBookingInfoBinding.bind(view)
 
         model.widgetModel.observe(viewLifecycleOwner, { bookingInfoModel ->
+            //Set for info layout
             binding.biDate.text = convertDate(parseDateToModel(bookingInfoModel.date).month.toInt(), parseDateToModel(bookingInfoModel.date).day.toInt())
-            binding.biUser.text = "Booked by: ${bookingInfoModel.bookedBy}"
-            binding.biPhone.text = "Phone: ${bookingInfoModel.phone}"
-            binding.biDeposit.text = "Deposit: ${bookingInfoModel.deposit}"
+            binding.biUser.text = "${getString(R.string.booked_by)}: ${bookingInfoModel.bookedBy}"
+            binding.biPhone.text = "${getString(R.string.phone)}: ${bookingInfoModel.phone}"
+            binding.biDeposit.text = "${getString(R.string.deposit)}: ${bookingInfoModel.deposit}"
+
+            //Set for editable fields
+            binding.filledUsernameFieldInfo.hint = "${getString(R.string.booked_by)}: ${bookingInfoModel.bookedBy}"
+            binding.filledPhoneFieldInfo.hint = "${getString(R.string.phone)}: ${bookingInfoModel.phone}"
+            binding.filledDepositFieldInfo.hint = "${getString(R.string.deposit)}: ${bookingInfoModel.deposit}"
 
             binding.biPhone.setOnClickListener {
-                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${bookingInfoModel.phone}"))
-                startActivity(intent)
+                if (ContextCompat.checkSelfPermission(requireActivity(),
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), 1013)
+                } else {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.title_call_tenant)
+                        .setPositiveButton(R.string.call) {_, _ ->
+                            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:${bookingInfoModel.phone}"))
+                            startActivity(intent)
+                        }
+                        .setNegativeButton(R.string.close) {d, _ ->
+                            d.dismiss()
+                        }
+                        .show()
+                }
             }
         })
-    }
 
-    private fun convertDate(month: Int, day: Int) = when (Locale.getDefault().displayLanguage) {
-        "русский" -> "$day " + when (month) {
-            1 -> "Января"
-            2 -> "Февраля"
-            3 -> "Марта"
-            4 -> "Апреля"
-            5 -> "Мая"
-            6 -> "Июня"
-            7 -> "Июля"
-            8 -> "Августа"
-            9 -> "Сентрября"
-            10 -> "Октября"
-            11 -> "Ноября"
-            12 -> "Декабря"
-            else -> "Января"
+        binding.updateInfo.setOnClickListener {
+            binding.viewInfoLayout.visibility = View.GONE
+            binding.changeViewInfoLayout.visibility = View.VISIBLE
+            it.visibility = View.GONE
         }
-        else -> "$day of ${DateFormatSymbols().months[month]}"
+
+        binding.saveInfo.setOnClickListener {
+            binding.viewInfoLayout.visibility = View.VISIBLE
+            binding.changeViewInfoLayout.visibility = View.GONE
+            binding.updateInfo.visibility = View.VISIBLE
+        }
+
+        binding.deleteLeast.setOnClickListener {
+
+        }
     }
 }

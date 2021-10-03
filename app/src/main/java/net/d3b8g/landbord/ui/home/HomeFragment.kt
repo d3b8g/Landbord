@@ -1,6 +1,7 @@
 package net.d3b8g.landbord.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -19,6 +20,7 @@ import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.convertDateToPattern
 import net.d3b8g.landbord.components.Converter.convertUnixToDate
 import net.d3b8g.landbord.components.Converter.getTodayDate
+import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentHomeBinding
@@ -76,7 +78,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         homeViewModel.getBookingData(getTodayDate()).observe(viewLifecycleOwner, {
             if (it != null) {
                 generateInfoWidget()
-                lifecycleScope.launch { setBookingInfo(getTodayDate()) }
+                lifecycleScope.launch { setBookingInfo(it, getTodayDate()) }
             }
         })
 
@@ -88,7 +90,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     generateAddWidget()
                 } else {
                     generateInfoWidget()
-                    lifecycleScope.launch { setBookingInfo("${year}-${month+1}-${dayOfMonth}") }
+                    lifecycleScope.launch { setBookingInfo(it, correctDateFormat) }
                 }
             })
         }
@@ -102,8 +104,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         modelAddInfo.shouldUpdateWidget.observe(viewLifecycleOwner, {
             if (it) {
                 generateInfoWidget()
-                val pickedDate = convertUnixToDate(binding.calendarView.date)
-                lifecycleScope.launch { setBookingInfo(pickedDate) }
+                //val pickedDate = convertUnixToDate(binding.calendarView.date)
+                //lifecycleScope.launch { setBookingInfo(pickedDate) }
             }
         })
 
@@ -122,21 +124,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             .replace(binding.widgetInfo.id, BookingInfoFragment())
             .commit()
 
-    private suspend fun setBookingInfo(date: String) = withContext(Dispatchers.IO) {
-        val bookingData = dbBooking.getListByDate(date, date)
-        withContext(Dispatchers.Main) {
-            if (bookingData != null && bookingData.isNotEmpty()) {
-                binding.widgetInfo.visibility = View.VISIBLE
-                modelDateInfo.widgetModel.value = BookingInfoModel(
-                    date = date,
-                    bookedBy = bookingData[0].username,
-                    phone = bookingData[0].userPhone,
-                    deposit = bookingData[0].deposit
-                )
-            } else {
-                generateAddWidget()
-            }
-        }
+    private fun setBookingInfo(date: BookingData, dateChosen: String) {
+        modelDateInfo.widgetModel.value = BookingInfoModel(
+            date = dateChosen,
+            bookedBy = date.username,
+            phone = date.userPhone,
+            deposit = date.deposit
+        )
     }
 
     private fun initBooking() = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao

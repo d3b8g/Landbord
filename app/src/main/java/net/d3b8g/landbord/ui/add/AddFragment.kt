@@ -130,22 +130,39 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
         private suspend fun createMockBooking() = withContext(Dispatchers.IO) {
 
+            val dataToday = parseDateToModel(getTodayDate())
             val db = BookingDatabase.getInstance(binding.root.context).bookedDatabaseDao
-            val yearMonth = "${parseDateToModel(getTodayDate()).year}-${parseDateToModel(getTodayDate()).month}"
-
-            for (i in 16..19) {
-                db.insert(
-                    BookingData(
-                        id = 0 ,
-                        flatId = 1,
-                        bookingDate = "${yearMonth}-$i",
-                        deposit = (1000..2000).random(),
-                        username = "Vasya Ivanov $i",
-                        userPhone = 89116487019,
-                        bookingEnd = "${yearMonth}-${i+0}",
-                        bookingChatLink = ""
+            val yearMonth = "${dataToday.year}-${dataToday.month}"
+            if (dataToday.day.toInt() < 28 && dataToday.month.toInt() != 2) {
+                for (i in dataToday.day.toInt()..dataToday.day.toInt() + 2) {
+                    db.insert(
+                        BookingData(
+                            id = 0 ,
+                            flatId = 1,
+                            bookingDate = "${yearMonth}-$i",
+                            deposit = (1000..2000).random(),
+                            username = "Vasya Ivanov $i",
+                            userPhone = 89116487019,
+                            bookingEnd = "${yearMonth}-${i+0}",
+                            bookingChatLink = ""
+                        )
                     )
-                )
+                }
+            } else {
+                for (i in 16..19) {
+                    db.insert(
+                        BookingData(
+                            id = 0 ,
+                            flatId = 1,
+                            bookingDate = "${yearMonth}-$i",
+                            deposit = (1000..2000).random(),
+                            username = "Vasya Ivanov $i",
+                            userPhone = 89116487019,
+                            bookingEnd = "${yearMonth}-${i+0}",
+                            bookingChatLink = ""
+                        )
+                    )
+                }
             }
         }
     }

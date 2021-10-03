@@ -13,9 +13,6 @@ data class BookingData(
     @ColumnInfo(name = "flatId")
     val flatId: Int,
 
-    @ColumnInfo(name = "booking_date")
-    val bookingDate: String,
-
     @ColumnInfo(name = "deposit")
     val deposit: Int,
 
@@ -24,6 +21,9 @@ data class BookingData(
 
     @ColumnInfo(name = "user_phone")
     val userPhone: Long,
+
+    @ColumnInfo(name = "booking_date")
+    val bookingDate: String,
 
     @ColumnInfo(name = "booking_end")
     val bookingEnd: String,

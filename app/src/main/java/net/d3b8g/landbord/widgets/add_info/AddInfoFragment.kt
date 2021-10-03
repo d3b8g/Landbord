@@ -14,6 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.Converter.covertStringToDate
+import net.d3b8g.landbord.components.DateHelper
 import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.databinding.WidgetAddInfoBinding
@@ -95,8 +97,15 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
         }
     }
 
-    private fun isDateFree(dateStart: String, dateEnd: String): Boolean =
-        db.getListByDate(dateStart, dateEnd)?.isEmpty() == true
+    private fun isDateFree(dateStart: String, dateEnd: String): Boolean {
+        val data = db.getListByMonth("${dateStart.dropLast(2)}01","${dateEnd.dropLast(2)}31")
+        return if (!data.isNullOrEmpty()) {
+            val closerDateIdFirst = DateHelper.getCloserDate(data, dateStart.covertStringToDate())
+            val closerDateIdSecond = DateHelper.getCloserDate(data, dateEnd.covertStringToDate())
+            //return if we havent closer date on Start/End
+            closerDateIdFirst != null && closerDateIdSecond != null
+        } else true
+    }
 
     private fun canUpdateDateInfo(): Boolean {
 

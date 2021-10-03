@@ -37,4 +37,10 @@
     <string name="generate_demo">Generate demo for app</string>
     <string name="open_chat">Open chat</string>
     <string name="image_plug">Image plug</string>
+    <string name="title_call_tenant">Call the tenant</string>
+    <string name="call">Call</string>
+    <string name="close">Close</string>
+    <string name="delete_lease">Delete the lease</string>
+    <string name="save">Save</string>
+    <string name="booked_by">Booked by</string>
 </resources>

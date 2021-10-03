@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/widget_info"
+<LinearLayout android:id="@+id/widget_info"
     android:background="@drawable/widget_shape"
     android:orientation="vertical"
     android:layout_marginEnd="16dp"
@@ -9,9 +8,10 @@
     android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-        android:padding="4dp"
+        android:padding="6dp"
         android:id="@+id/header_date"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -19,12 +19,13 @@
         <ImageView
             android:contentDescription="@string/image_plug"
             android:src="@drawable/ic_calendar_28"
-            android:layout_width="24dp"
-            android:layout_height="24dp"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
         <TextView
             android:layout_marginStart="8dp"
             android:id="@+id/bi_date"
             android:textStyle="bold"
+            android:layout_gravity="center"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:layout_width="match_parent"
@@ -41,6 +42,8 @@
         android:layout_height="1dp"/>
 
     <LinearLayout
+        android:id="@+id/view_info_layout"
+        android:visibility="visible"
         android:layout_marginStart="6dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -67,7 +70,87 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/change_view_info_layout"
+        android:visibility="gone"
+        android:layout_marginStart="6dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="6dp"
+            android:id="@+id/filledUsernameFieldInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_label_24"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/tenant">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fieldUsernameInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="32"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="6dp"
+            android:id="@+id/filledPhoneFieldInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_contact_phone_24"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fieldPhoneInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:maxLength="32"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="6dp"
+            android:id="@+id/filledDepositFieldInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_money"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/deposit">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fieldDepositInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="32"
+                android:inputType="phone"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/save_info"
+            android:layout_marginTop="6dp"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/delete_least"
+            android:text="@string/delete_lease"
+            android:layout_marginTop="6dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textColor="@color/colorRed"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+
     <Button
+        android:id="@+id/update_info"
         android:layout_marginTop="4dp"
         android:text="@string/update"
         android:textAllCaps="false"
