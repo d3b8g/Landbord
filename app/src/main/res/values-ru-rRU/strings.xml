@@ -38,4 +38,10 @@
     <string name="generate_demo">Сгенерировать демо приложение</string>
     <string name="open_chat">Открыть чат</string>
     <string name="image_plug">Изображение</string>
+    <string name="booked_by">Забронировал</string>
+    <string name="save">Сохранить</string>
+    <string name="delete_lease">Удалить бронь</string>
+    <string name="close">Закрыть</string>
+    <string name="call">Вызов</string>
+    <string name="title_call_tenant">Позвонить аренданту</string>
 </resources>
