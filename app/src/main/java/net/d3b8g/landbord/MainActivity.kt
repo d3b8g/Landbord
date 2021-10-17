@@ -37,12 +37,21 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
-        PreferenceManager.getDefaultSharedPreferences(this).apply {
-            if(!getBoolean("have_flats", false)) {
-                findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_add)
-                navView.visibility = View.GONE
-            }
+        this.apply {
+            //createNotificationChannel()
+            //sendNotification()
         }
+
+
+        PreferenceManager.getDefaultSharedPreferences(this).apply {
+                if (!getBoolean("have_flats", false)) {
+                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_add)
+                    navView.visibility = View.GONE
+                }
+                if (!getBoolean("check_list_visible", true)) {
+                    navView.menu.findItem(R.id.navigation_checklist).isVisible = false
+                }
+            }
     }
 
     override fun onBackPressed() {

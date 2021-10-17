@@ -11,4 +11,8 @@
         android:title="@string/title_income"
         android:icon="@drawable/ic_money"/>
 
+    <item
+        android:id="@+id/navigation_checklist"
+        android:title="@string/checklist"
+        android:icon="@drawable/ic_checklist_24"/>
 </menu>

@@ -1,7 +1,6 @@
 package net.d3b8g.landbord.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -13,12 +12,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.convertDateToPattern
-import net.d3b8g.landbord.components.Converter.convertUnixToDate
 import net.d3b8g.landbord.components.Converter.getTodayDate
 import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase

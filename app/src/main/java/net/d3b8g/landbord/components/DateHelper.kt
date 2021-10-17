@@ -1,10 +1,6 @@
 package net.d3b8g.landbord.components
 
-import android.util.Log
-import net.d3b8g.landbord.cache.AppCache.findDateCache
-import net.d3b8g.landbord.components.Converter.convertUnixToDate
 import net.d3b8g.landbord.components.Converter.covertStringToDate
-import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.database.Booking.BookingData
 import java.util.*
 
