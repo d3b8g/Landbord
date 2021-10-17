@@ -16,8 +16,6 @@ import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.convertDate
 import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.databinding.WidgetBookingInfoBinding
-import java.text.DateFormatSymbols
-import java.util.*
 
 class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
 
@@ -32,7 +30,8 @@ class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
             //Set for info layout
             binding.biDate.text = convertDate(parseDateToModel(bookingInfoModel.date).month.toInt(), parseDateToModel(bookingInfoModel.date).day.toInt())
             binding.biUser.text = "${getString(R.string.booked_by)}: ${bookingInfoModel.bookedBy}"
-            binding.biPhone.text = "${getString(R.string.phone)}: ${bookingInfoModel.phone}"
+            binding.biPhoneTitle.text = "${getString(R.string.phone)}: "
+            binding.biPhone.text = bookingInfoModel.phone.toString()
             binding.biDeposit.text = "${getString(R.string.deposit)}: ${bookingInfoModel.deposit}"
 
             //Set for editable fields

@@ -28,4 +28,10 @@
         android:label="@string/title_income"
         tools:layout="@layout/fragment_income" />
 
+    <fragment
+        android:id="@+id/navigation_checklist"
+        android:name="net.d3b8g.landbord.ui.checklist.CheckListFragment"
+        android:label="@string/checklist"
+        tools:layout="@layout/fragment_check_list" />
+
 </navigation>

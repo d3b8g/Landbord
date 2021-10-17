@@ -45,7 +45,7 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
                     .build()
 
                 if (hasFocus) {
-                    binding.fieldDateTo.hint = "YYYY-MM-DD"
+                    binding.fieldDateTo.hint = getString(R.string.date_pattern_format)
                     datePicker.show(parentFragmentManager , "DateOfEnd")
                     datePicker.addOnPositiveButtonClickListener {
                         val calendarDate = model.chosenCalendarDate.value!!
