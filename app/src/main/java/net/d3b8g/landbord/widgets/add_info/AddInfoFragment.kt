@@ -34,42 +34,44 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
 
         binding = WidgetAddInfoBinding.bind(view)
 
-        binding.closeWidget.setOnClickListener {
-            model.widgetSetState.value = true
-        }
+        with(binding) {
 
-        binding.fieldDateTo.onFocusChangeListener =
-            View.OnFocusChangeListener { _ , hasFocus ->
-                val datePicker = MaterialDatePicker.Builder.datePicker()
-                    .setTitleText(getString(R.string.date_to))
-                    .build()
-
-                if (hasFocus) {
-                    binding.fieldDateTo.hint = getString(R.string.date_pattern_format)
-                    datePicker.show(parentFragmentManager , "DateOfEnd")
-                    datePicker.addOnPositiveButtonClickListener {
-                        val calendarDate = model.chosenCalendarDate.value!!
-                        val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
-
-                        if (it < SimpleDateFormat("yyyy-MM-dd").parse(calendarDate)!!.time) {
-                            Snackbar.make(
-                                view ,
-                                getString(R.string.date_early_error) ,
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                            binding.fieldDateTo.setText(calendarDate)
-                        } else {
-                            binding.fieldDateTo.setText(chosenDate)
-                        }
-                    }
-                } else binding.fieldDateTo.hint = ""
+            closeWidget.setOnClickListener {
+                model.widgetSetState.value = true
             }
 
+            fieldDateTo.onFocusChangeListener =
+                View.OnFocusChangeListener { _ , hasFocus ->
+                    val datePicker = MaterialDatePicker.Builder.datePicker()
+                        .setTitleText(getString(R.string.date_to))
+                        .build()
 
-        binding.updateAddInfo.setOnClickListener {
-            if (canUpdateDateInfo()) {
-                lifecycleScope.launch {
-                    updateDateInfo()
+                    if (hasFocus) {
+                        fieldDateTo.hint = getString(R.string.date_pattern_format)
+                        datePicker.show(parentFragmentManager , "DateOfEnd")
+                        datePicker.addOnPositiveButtonClickListener {
+                            val calendarDate = model.chosenCalendarDate.value!!
+                            val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
+
+                            if (it < SimpleDateFormat("yyyy-MM-dd").parse(calendarDate)!!.time) {
+                                Snackbar.make(
+                                    view ,
+                                    getString(R.string.date_early_error) ,
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                                fieldDateTo.setText(calendarDate)
+                            } else {
+                                fieldDateTo.setText(chosenDate)
+                            }
+                        }
+                    } else fieldDateTo.hint = ""
+                }
+
+            updateAddInfo.setOnClickListener {
+                if (canUpdateDateInfo()) {
+                    lifecycleScope.launch {
+                        updateDateInfo()
+                    }
                 }
             }
         }

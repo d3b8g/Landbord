@@ -10,6 +10,12 @@
         android:name="net.d3b8g.landbord.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_add"
+            app:destination="@id/navigation_add" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_notification"
+            app:destination="@id/navigation_notification" />
     </fragment>
 
     <fragment
@@ -33,5 +39,11 @@
         android:name="net.d3b8g.landbord.ui.checklist.CheckListFragment"
         android:label="@string/checklist"
         tools:layout="@layout/fragment_check_list" />
+
+    <fragment
+        android:id="@+id/navigation_notification"
+        android:name="net.d3b8g.landbord.ui.notifications.NotificationFragment"
+        android:label="@string/notification"
+        tools:layout="@layout/fragment_notifications"/>
 
 </navigation>

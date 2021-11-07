@@ -5,46 +5,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <RelativeLayout
+    <net.d3b8g.landbord.customComponentsUI.FragmentHeader
+        android:id="@+id/notification_header"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="60dp" />
 
-        <ImageButton
-            android:id="@+id/notify_back"
-            android:src="@drawable/ic_arrow_back_24"
-            android:background="@android:color/transparent"
-            android:layout_alignParentStart="true"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
-
-        <TextView
-            android:layout_marginStart="28dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/notification"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_toEndOf="@+id/notify_back" />
-
-        <ImageButton
-            android:id="@+id/notify_sort"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_sort_24" />
-    </RelativeLayout>
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/colorMoreGray"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/ic_access_time_24"
+            android:layout_width="36dp"
+            android:layout_height="36dp"/>
+        <TextView
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:text="@string/notifications_send_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/notification_timer"
+            android:textColor="@color/colorBlueStandard"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:background="@android:color/transparent"
+            android:text="10:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notifications_rcv"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/notification_rcv_plug"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:background="@drawable/widget_shape"
+        android:padding="32dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="@string/notifications_plug"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 </LinearLayout>

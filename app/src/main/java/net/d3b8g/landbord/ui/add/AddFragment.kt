@@ -6,7 +6,7 @@ import android.view.View
 import androidx.core.content.edit
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
@@ -25,12 +25,10 @@ import net.d3b8g.landbord.databinding.FragmentAddBinding
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
-    private lateinit var addViewModel: AddViewModel
+    private val addViewModel: AddViewModel by activityViewModels()
     private lateinit var binding: FragmentAddBinding
 
-    override fun onViewCreated(view: View , savedInstanceState: Bundle?) {
-
-        addViewModel = ViewModelProvider(this).get(AddViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentAddBinding.bind(view)
 
         val nameFlat = binding.fieldName
@@ -45,6 +43,17 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             canShowButton()
         }
 
+        when(addViewModel.state.value) {
+            AddViewState.ADD_NEW_FLAT -> {
+                binding.addInfo.visibility = View.GONE
+                binding.generateDemo.visibility = View.GONE
+                binding.closeAddFragment.visibility = View.VISIBLE
+            }
+            AddViewState.NEW_USER -> {
+                // Nothing to do, just went
+            }
+        }
+
         binding.addNewFlat.setOnClickListener {
             if(linkFlat.text!!.isNotEmpty() && !linkFlat.text!!.matches(Patterns.WEB_URL.toRegex())) {
                 binding.filledLinkField.error = getText(R.string.incorrect_link)
@@ -53,12 +62,9 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             }
         }
 
-        binding.addInfo.setOnClickListener {
-            showDialogInfo()
-        }
-        binding.generateDemo.setOnClickListener {
-            GenerateDemoApp().generateDemo()
-        }
+        binding.addInfo.setOnClickListener { showDialogInfo() }
+        binding.generateDemo.setOnClickListener { GenerateDemoApp().generateDemo() }
+        binding.closeAddFragment.setOnClickListener { requireActivity().onBackPressed() }
     }
 
     private fun showDialogInfo() {
@@ -76,7 +82,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             binding.generateDemo.visibility = View.GONE
         } else {
             binding.addNewFlat.visibility = View.GONE
-            binding.generateDemo.visibility = View.VISIBLE
+            if (addViewModel.state.value != null && addViewModel.state.value == AddViewState.NEW_USER)
+                binding.generateDemo.visibility = View.VISIBLE
         }
     }
 

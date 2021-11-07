@@ -8,4 +8,6 @@ class BookingInfoViewModel : ViewModel() {
 
     val widgetModel = MutableLiveData<BookingInfoModel>()
 
+    val deleteUserBooking = MutableLiveData<Boolean>()
+
 }

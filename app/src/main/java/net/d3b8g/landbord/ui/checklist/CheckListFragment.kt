@@ -22,9 +22,11 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list) {
         checklistViewModel = ViewModelProvider(this).get(CheckListViewModel::class.java)
 
         adapter = CheckListAdapter()
-        binding.checkListRcv.adapter = adapter
-        binding.checkListRcv.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.checkListRcv.setHasFixedSize(false)
+        binding.checkListRcv.apply {
+            adapter = adapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            setHasFixedSize(false)
+        }
 
         checklistViewModel.checkList(requireContext()).observe(viewLifecycleOwner, {
             if (it.size > 0 && binding.checklistBlockAssert.visibility == View.VISIBLE) {

@@ -5,6 +5,10 @@ import kotlin.collections.ArrayList
 
 object AppCache {
 
+    fun Date.deleteBookingInfoByDate() {
+        dateCache.filterNot { it.uid != findDateCache() }
+    }
+
     fun Date.haveDateCache(): Boolean {
         for (i in dateCache) {
             if (this.after(i.dateStart) && this.before(i.dateEnd))

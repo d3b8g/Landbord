@@ -48,4 +48,11 @@
     <string name="hide_tab_check_list">Hide tab Check List</string>
     <string name="empty_data_on_check_list">You haven`t item in check list.</string>
     <string name="check_list_next_repeat">Next repeat on</string>
+    <string name="add_new_flat">Add new flat</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_send_time">Time of receipt notifications:</string>
+    <string name="notifications_plug">You havent notifications yet.</string>
+    <string name="notification_disable">Notifications disabled</string>
+    <string name="notification_enable">Notifications enabled</string>
+    <string name="notification_center">Notifications center</string>
 </resources>

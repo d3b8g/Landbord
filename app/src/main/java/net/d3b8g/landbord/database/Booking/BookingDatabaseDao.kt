@@ -17,6 +17,9 @@ interface BookingDatabaseDao {
     @Update
     fun update(data: BookingData)
 
+    @Query("SELECT count(*) from booking")
+    fun countBooking(): Int
+
     @Query("SELECT * from booking WHERE id = :id")
     fun getById(id: Int): BookingData
 
@@ -28,5 +31,8 @@ interface BookingDatabaseDao {
 
     @Query("SELECT * from booking WHERE booking_date BETWEEN :dateStart AND :dateEnd OR booking_end BETWEEN :dateStart AND :dateEnd")
     fun getListByMonth(dateStart: String, dateEnd: String): List<BookingData>?
+
+    @Query("DELETE from booking WHERE id = :id")
+    fun deleteBookingUser(id: Int)
 
 }

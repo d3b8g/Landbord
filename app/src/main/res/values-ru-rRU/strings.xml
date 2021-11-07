@@ -34,6 +34,7 @@
     <string name="field_empty">Пустое поле</string>
     <string name="invalid_url">Некорректная ссылка</string>
     <string name="notification">Уведомление</string>
+    <string name="notifications">Уведомления</string>
     <string name="dates_busy">Эта дата занята</string>
     <string name="generate_demo">Сгенерировать демо приложение</string>
     <string name="open_chat">Открыть чат</string>
@@ -45,4 +46,14 @@
     <string name="call">Вызов</string>
     <string name="title_call_tenant">Позвонить аренданту</string>
     <string name="date_pattern_format">1980-12-31</string>
+    <string name="checklist">Чек-лист</string>
+    <string name="hide_tab_check_list">Скрыть раздел Чек-лист</string>
+    <string name="empty_data_on_check_list">У Вас нет пунктов в Чек-листе.</string>
+    <string name="check_list_next_repeat">Следующие повторение в</string>
+    <string name="add_new_flat">Добавить новую квартиру</string>
+    <string name="notifications_send_time">Время отправки уведомления:</string>
+    <string name="notifications_plug">У Вас еще нет уведомлений.</string>
+    <string name="notification_disable">Уведомления отключены</string>
+    <string name="notification_enable">Уведомления включены</string>
+    <string name="notification_center">Центр уведомлений</string>
 </resources>

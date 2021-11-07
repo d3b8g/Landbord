@@ -11,10 +11,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.cache.AppCache.deleteBookingInfoByDate
 import net.d3b8g.landbord.components.Converter.convertDate
+import net.d3b8g.landbord.components.Converter.covertStringToDate
 import net.d3b8g.landbord.components.Converter.parseDateToModel
+import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.databinding.WidgetBookingInfoBinding
 
 class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
@@ -56,6 +62,16 @@ class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
                         .show()
                 }
             }
+
+            binding.deleteLeast.setOnClickListener {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val bookingBase = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
+                    bookingBase.deleteBookingUser(bookingInfoModel.id)
+                }
+                model.deleteUserBooking.value = true
+                //Remove cache
+                bookingInfoModel.date.covertStringToDate().deleteBookingInfoByDate()
+            }
         })
 
         binding.updateInfo.setOnClickListener {
@@ -70,8 +86,6 @@ class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
             binding.updateInfo.visibility = View.VISIBLE
         }
 
-        binding.deleteLeast.setOnClickListener {
 
-        }
     }
 }
