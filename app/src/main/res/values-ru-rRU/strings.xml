@@ -51,7 +51,7 @@
     <string name="empty_data_on_check_list">У Вас нет пунктов в Чек-листе.</string>
     <string name="check_list_next_repeat">Следующие повторение в</string>
     <string name="add_new_flat">Добавить новую квартиру</string>
-    <string name="notifications_send_time">Время отправки уведомления:</string>
+    <string name="notifications_send_time">Изменить время отправки уведомления:</string>
     <string name="notifications_plug">У Вас еще нет уведомлений.</string>
     <string name="notification_disable">Уведомления отключены</string>
     <string name="notification_enable">Уведомления включены</string>

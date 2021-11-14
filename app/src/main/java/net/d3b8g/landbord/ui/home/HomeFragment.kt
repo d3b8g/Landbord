@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.convertDateToPattern
+import net.d3b8g.landbord.components.Converter.convertUnixToDate
 import net.d3b8g.landbord.components.Converter.getTodayDate
 import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
@@ -90,10 +91,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
 
         modelAddInfo.shouldUpdateWidget.observe(viewLifecycleOwner, {
-            if (it) {
+            if (it != null) {
                 generateInfoWidget()
-                //val pickedDate = convertUnixToDate(binding.calendarView.date)
-                //lifecycleScope.launch { setBookingInfo(pickedDate) }
+                generateStatisticsWidget()
+                val pickedDate = convertUnixToDate(binding.calendarView.date)
+                setBookingInfo(it, pickedDate)
             }
         })
 

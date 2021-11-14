@@ -50,7 +50,7 @@
     <string name="check_list_next_repeat">Next repeat on</string>
     <string name="add_new_flat">Add new flat</string>
     <string name="notifications">Notifications</string>
-    <string name="notifications_send_time">Time of receipt notifications:</string>
+    <string name="notifications_send_time">Change time of receipt notifications:</string>
     <string name="notifications_plug">You havent notifications yet.</string>
     <string name="notification_disable">Notifications disabled</string>
     <string name="notification_enable">Notifications enabled</string>

@@ -10,23 +10,16 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.ActivityMainBinding
-import net.d3b8g.landbord.notification.NotificationHelper.setupBroadcastNotification
-import net.d3b8g.landbord.notification.NotificationsActions
+import net.d3b8g.landbord.notification.NotificationHelper.delayedNotificationAlarm
 import net.d3b8g.landbord.notification.getNotificationStatus
-import net.d3b8g.landbord.notification.setNotificationsJson
 import net.d3b8g.landbord.ui.add.AddViewModel
 import net.d3b8g.landbord.ui.add.AddViewState
-import net.d3b8g.landbord.ui.notifications.NotificationsAdapterModel
-import net.d3b8g.landbord.ui.notifications.NotificationsAdapterModels
-import net.d3b8g.landbord.ui.notifications.NotificationsDelayType
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,12 +37,8 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
-        //Fake Data to notifications
-        //createFakeNotificationsAdapterData()
-
         //Send Notification
-        if (getNotificationStatus(this)) this.setupBroadcastNotification(NotificationsActions.START)
-        else this.setupBroadcastNotification(NotificationsActions.STOP)
+        if (getNotificationStatus(this)) this.delayedNotificationAlarm()
 
         //Init preferences fragments
         PreferenceManager.getDefaultSharedPreferences(this).apply {
@@ -62,19 +51,6 @@ class MainActivity : AppCompatActivity() {
                 navView.menu.findItem(R.id.navigation_checklist).isVisible = false
             }
         }
-
-    }
-
-    private fun createFakeNotificationsAdapterData() {
-        val notificationsList: ArrayList<NotificationsAdapterModel> = ArrayList()
-        (0..9).forEach {
-            notificationsList.add(
-                NotificationsAdapterModel(
-                id = it, type = NotificationsDelayType.EMPTY_DATA, date = "2021-10-09"
-            ))
-        }
-        val dataToSave = Gson().toJson(NotificationsAdapterModels(notificationsList))
-        setNotificationsJson(this, dataToSave)
     }
 
     override fun onBackPressed() {

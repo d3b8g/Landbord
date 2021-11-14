@@ -26,10 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".notification.NotificationService"
-            android:label="Notification"
-            android:stopWithTask="false">
-        </service>
+        <receiver android:name=".notification.NotificationReceiver" />
     </application>
 </manifest>

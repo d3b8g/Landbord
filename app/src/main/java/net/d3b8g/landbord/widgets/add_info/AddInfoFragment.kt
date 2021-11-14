@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +19,6 @@ import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.databinding.WidgetAddInfoBinding
 import net.d3b8g.landbord.ui.home.HomeFragment.Companion.FLAT_LAST_KEY
-import java.text.SimpleDateFormat
 
 class AddInfoFragment : Fragment(R.layout.widget_add_info) {
 
@@ -31,7 +29,6 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding = WidgetAddInfoBinding.bind(view)
 
         with(binding) {
@@ -39,33 +36,6 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
             closeWidget.setOnClickListener {
                 model.widgetSetState.value = true
             }
-
-            fieldDateTo.onFocusChangeListener =
-                View.OnFocusChangeListener { _ , hasFocus ->
-                    val datePicker = MaterialDatePicker.Builder.datePicker()
-                        .setTitleText(getString(R.string.date_to))
-                        .build()
-
-                    if (hasFocus) {
-                        fieldDateTo.hint = getString(R.string.date_pattern_format)
-                        datePicker.show(parentFragmentManager , "DateOfEnd")
-                        datePicker.addOnPositiveButtonClickListener {
-                            val calendarDate = model.chosenCalendarDate.value!!
-                            val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
-
-                            if (it < SimpleDateFormat("yyyy-MM-dd").parse(calendarDate)!!.time) {
-                                Snackbar.make(
-                                    view ,
-                                    getString(R.string.date_early_error) ,
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
-                                fieldDateTo.setText(calendarDate)
-                            } else {
-                                fieldDateTo.setText(chosenDate)
-                            }
-                        }
-                    } else fieldDateTo.hint = ""
-                }
 
             updateAddInfo.setOnClickListener {
                 if (canUpdateDateInfo()) {
@@ -81,21 +51,21 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
     private suspend fun updateDateInfo() = withContext(Dispatchers.IO) {
         val calendarDate = model.chosenCalendarDate.value!!
 
-        val insertData = db.insert(
-            BookingData(
-                id = 0 ,
-                flatId = getFlatId(),
-                bookingDate = calendarDate,
-                deposit = binding.fieldDeposit.text!!.toString().toInt(),
-                username = binding.fieldUsername.text!!.toString(),
-                userPhone = binding.fieldPhone.text!!.toString().toLong(),
-                bookingEnd = binding.fieldDateTo.text.toString(),
-                bookingChatLink = binding.fieldChatLink.text!!.toString()
-            )
+        val bookingData = BookingData(
+            id = 0 ,
+            flatId = getFlatId(),
+            bookingDate = calendarDate,
+            deposit = binding.fieldDeposit.text!!.toString().toInt(),
+            username = binding.fieldUsername.text!!.toString(),
+            userPhone = binding.fieldPhone.text!!.toString().toLong(),
+            //bookingEnd = binding.fieldDateTo.text.toString(),
+            bookingEnd = "2021-11-14",
+            bookingChatLink = binding.fieldChatLink.text!!.toString()
         )
+        val insertData = db.insert(bookingData)
 
         withContext(Dispatchers.Main) {
-            model.shouldUpdateWidget.value = (insertData > 0)
+            if (insertData > 0) model.shouldUpdateWidget.value = bookingData
         }
     }
 
@@ -137,13 +107,7 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
             ""
         }
 
-        binding.filledPhoneField.error = if (binding.fieldDateTo.text!!.isEmpty()) {
-            canUpdate = false
-            getString(R.string.field_empty)
-        } else {
-            canUpdate = true
-            ""
-        }
+        canUpdate = binding.widgetAddDatePicker.isDateCurrent(model.chosenCalendarDate.value!!)
 
         binding.filledChatLinkField.error =
             if (binding.fieldChatLink.text!!.toString().isNotEmpty() &&
@@ -154,7 +118,8 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                if (isDateFree(model.chosenCalendarDate.value!!, binding.fieldDateTo.text.toString())) {
+                //if (isDateFree(model.chosenCalendarDate.value!!, binding.fieldDateTo.text.toString())) {
+                if (isDateFree(model.chosenCalendarDate.value!!,"2021-11-31")) {
                     canUpdate = true
                 } else {
                     withContext(Dispatchers.Main) {

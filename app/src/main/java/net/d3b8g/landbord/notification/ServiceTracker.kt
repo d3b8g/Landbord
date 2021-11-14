@@ -6,14 +6,10 @@ import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
+import net.d3b8g.landbord.ui.notifications.NotificationsAdapterModel
 import net.d3b8g.landbord.ui.notifications.NotificationsAdapterModels
 
-enum class ServiceState {
-    STARTED,
-    STOPPED,
-}
 
-private const val key = "NOTIFICATION_STATE"
 private const val notificationDelayedAt = "HOURS_NOTIFICATION_DELAY"
 private const val notificationsJsonElement = "NOTIFICATIONS_JSON"
 private const val notificationsStatus = "NOTIFICATIONS_STATUS"
@@ -26,9 +22,27 @@ fun setNotificationStatus(context: Context, isEnable: Boolean) {
 
 fun getNotificationStatus(context: Context) = getPreferences(context).getBoolean(notificationsStatus, true)
 
-fun setNotificationsJson(context: Context, json: String) {
+fun setNotificationsJson(context: Context, addNotification: NotificationsAdapterModel) {
+    val getActualNotificationList = getNotificationsJson(context)
+
+    val gsonNotificationsList: String = if (getActualNotificationList != null) {
+        if (getActualNotificationList.notificationsList.size == 10) {
+            getActualNotificationList.notificationsList.dropLast(0)
+        }
+        appLog(context, "Add new: $addNotification")
+        getActualNotificationList.notificationsList.add(0, addNotification)
+        getActualNotificationList.notificationsList.mapIndexed { index , notificationsAdapterModel ->
+            if (index > 0) notificationsAdapterModel.id = index
+        }
+
+        Gson().toJson(getActualNotificationList, NotificationsAdapterModels::class.java)
+    } else {
+        Gson().toJson(NotificationsAdapterModels(arrayListOf(addNotification)), NotificationsAdapterModels::class.java)
+    }
+
+    appLog(context, gsonNotificationsList)
     getPreferences(context).edit {
-        putString(notificationsJsonElement, json)
+        putString(notificationsJsonElement, gsonNotificationsList)
     }
 }
 
@@ -50,20 +64,8 @@ fun setNotificationDelay(context: Context, time: String) {
 
 fun getNotificationDelay(context: Context): String = getPreferences(context).getString(notificationDelayedAt, "10:00")!!
 
-fun setServiceState(context: Context, state: ServiceState) {
-    getPreferences(context).edit {
-        putString(key, state.name)
-    }
-}
-
-fun getServiceState(context: Context): ServiceState {
-    val sharedPrefs = getPreferences(context)
-    val value = sharedPrefs.getString(key, ServiceState.STOPPED.name)
-    return ServiceState.valueOf(value!!)
-}
-
 private fun getPreferences(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-fun log(fromClass: Any, text: String) {
+fun appLog(fromClass: Any, text: String) {
     Log.e(fromClass::class.java.simpleName, text)
 }

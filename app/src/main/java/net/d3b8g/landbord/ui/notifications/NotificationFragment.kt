@@ -23,6 +23,7 @@ import net.d3b8g.landbord.R
 import net.d3b8g.landbord.customComponentsUI.ComponentsActions.vibrateDevice
 import net.d3b8g.landbord.databinding.FragmentNotificationsBinding
 import net.d3b8g.landbord.notification.*
+import net.d3b8g.landbord.notification.NotificationHelper.delayedNotificationAlarm
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,6 +70,7 @@ class NotificationFragment : Fragment(R.layout.fragment_notifications) {
                     SimpleDateFormat("HH:mm").format(cal.time).also {
                         text = it
                         setNotificationDelay(requireContext(), it)
+                        requireContext().delayedNotificationAlarm()
                     }
                 }
                 TimePickerDialog(

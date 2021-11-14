@@ -1,7 +1,6 @@
 package net.d3b8g.landbord.ui.checklist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -32,7 +31,6 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list) {
             if (it.size > 0 && binding.checklistBlockAssert.visibility == View.VISIBLE) {
                 binding.checklistBlockAssert.visibility = View.GONE
             }
-            Log.e("RRR", it.toString())
             adapter.updateList(it)
         })
     }
