@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <net.d3b8g.landbord.customComponentsUI.FragmentHeader
         android:id="@+id/notification_header"
+        app:headerTitle="@string/notifications"
         android:layout_width="match_parent"
         android:layout_height="60dp" />
 
@@ -63,7 +63,6 @@
         android:id="@+id/notification_rcv_plug"
         android:visibility="gone"
         android:layout_gravity="center"
-        android:background="@drawable/widget_shape"
         android:padding="32dp"
         android:textStyle="bold"
         android:textColor="@color/black"

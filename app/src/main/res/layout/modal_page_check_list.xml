@@ -2,12 +2,25 @@
 <LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/shaped_background_modal_page"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_margin="4dp"
+    android:padding="8dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <net.d3b8g.landbord.customComponentsUI.FragmentHeader
+        android:id="@+id/checkListAddHeader"
+        app:headerTitle="@string/add_new_check_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filledCheckListTitle"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
         android:layout_height="wrap_content"
         app:startIconDrawable="@drawable/ic_label_24"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -21,4 +34,17 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <net.d3b8g.landbord.customComponentsUI.InputDatePicker
+        android:id="@+id/checkListRepeatDate"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_height="wrap_content" />
+
+    <CheckBox
+        android:text="Is repeatble"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

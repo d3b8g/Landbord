@@ -36,13 +36,17 @@ class NotificationFragment : Fragment(R.layout.fragment_notifications) {
         binding = FragmentNotificationsBinding.bind(view)
 
         binding.notificationsRcv.apply {
-            getNotificationsJson(requireContext())?.let {
-                adapter = NotificationsAdapter(it)
+            val notificationsList = getNotificationsJson(requireContext())
+            if (notificationsList != null) {
+                adapter = NotificationsAdapter(notificationsList)
 
-                if (it.notificationsList.isEmpty()) {
+                if (notificationsList.notificationsList.isEmpty()) {
                     binding.notificationRcvPlug.visibility = View.VISIBLE
                 }
+            } else {
+                binding.notificationRcvPlug.visibility = View.VISIBLE
             }
+
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(false)
         }

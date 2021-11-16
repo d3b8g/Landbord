@@ -55,4 +55,5 @@
     <string name="notification_disable">Notifications disabled</string>
     <string name="notification_enable">Notifications enabled</string>
     <string name="notification_center">Notifications center</string>
+    <string name="add_new_check_list">Add new item</string>
 </resources>

@@ -1,5 +1,6 @@
 package net.d3b8g.landbord.customComponentsUI
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -9,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import net.d3b8g.landbord.R
 
+@SuppressLint("CustomViewStyleable", "Recycle")
 class FragmentHeader @JvmOverloads constructor(
     context: Context ,
     attrs: AttributeSet? = null ,
@@ -26,6 +28,12 @@ class FragmentHeader @JvmOverloads constructor(
         titleView = findViewById(R.id.fragment_header_title)
         leftButton = findViewById(R.id.fragment_header_left_button)
         rightButton = findViewById(R.id.fragment_header_right_button)
+
+        attrs?.let {
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.fragmentsHeader)
+            val headerTitle = typedArray.getString(R.styleable.fragmentsHeader_headerTitle)
+            titleView.text = headerTitle
+        }
     }
 
     fun setTitleText(title: String) {

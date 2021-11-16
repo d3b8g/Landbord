@@ -1,44 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <!-- Header -->
-    <RelativeLayout
-        android:orientation="horizontal"
+    <net.d3b8g.landbord.customComponentsUI.FragmentHeader
+        android:id="@+id/check_list_header"
+        android:layout_alignParentTop="true"
+        app:headerTitle="@string/checklist"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <TextView
-            android:id="@+id/income_month_header_text"
-            android:layout_centerInParent="true"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:text="@string/checklist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"/>
 
-        <ImageButton
-            android:id="@+id/income_next_month_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/ic_settings_applications_24" />
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/colorMoreGray"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
     <!-- Assert that empty list -->
     <LinearLayout
         android:id="@+id/checklist_block_assert"
+        android:layout_below="@id/check_list_header"
         android:paddingTop="12dp"
         android:layout_margin="16dp"
         android:background="@drawable/widget_shape"
@@ -78,5 +55,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/check_list_rcv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/check_list_header" />
+
+    <net.d3b8g.landbord.ui.checklist.CheckListModalPage
+        android:id="@+id/addNewCheckList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

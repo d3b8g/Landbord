@@ -18,7 +18,7 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentCheckListBinding.bind(view)
-        checklistViewModel = ViewModelProvider(this).get(CheckListViewModel::class.java)
+        checklistViewModel = ViewModelProvider(this)[CheckListViewModel::class.java]
 
         adapter = CheckListAdapter()
         binding.checkListRcv.apply {
@@ -33,6 +33,7 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list) {
             }
             adapter.updateList(it)
         })
+
     }
 
     private fun convertArrayToJSONString(list: ArrayList<CheckListItemModel>): String {
