@@ -9,11 +9,13 @@ class StatisticViewModelFactory(
     private val dataSource: BookingDatabaseDao,
     private val application: Application
 ) : ViewModelProvider.Factory {
-    @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+    @Suppress("UNCHECKED_CAST") //give a shit
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(StatisticViewModel::class.java)) {
             return StatisticViewModel(dataSource, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+
 }

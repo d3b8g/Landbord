@@ -12,6 +12,9 @@ object Converter {
     fun getTodayDate(): String = SimpleDateFormat("yyyy-MM-dd").format(Date())
 
     @SuppressLint("SimpleDateFormat")
+    fun getTodayFullTime(): String = SimpleDateFormat("yyyy-MM-dd HH:mm").format(Date())
+
+    @SuppressLint("SimpleDateFormat")
     fun String.covertStringToDate(): Date = SimpleDateFormat("yyyy-MM-dd").parse(this)!!
 
     fun getTodayUnix(): Long = System.currentTimeMillis()

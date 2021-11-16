@@ -2,6 +2,7 @@ package net.d3b8g.landbord.widgets.add_info
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import net.d3b8g.landbord.database.Booking.BookingData
 
 class AddInfoViewModel : ViewModel() {
 
@@ -9,5 +10,5 @@ class AddInfoViewModel : ViewModel() {
 
     val chosenCalendarDate = MutableLiveData<String>()
 
-    val shouldUpdateWidget = MutableLiveData<Boolean>()
+    val shouldUpdateWidget = MutableLiveData<BookingData>()
 }

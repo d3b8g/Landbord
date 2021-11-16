@@ -1,7 +1,6 @@
 package net.d3b8g.landbord.ui.checklist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,20 +18,22 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentCheckListBinding.bind(view)
-        checklistViewModel = ViewModelProvider(this).get(CheckListViewModel::class.java)
+        checklistViewModel = ViewModelProvider(this)[CheckListViewModel::class.java]
 
         adapter = CheckListAdapter()
-        binding.checkListRcv.adapter = adapter
-        binding.checkListRcv.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.checkListRcv.setHasFixedSize(false)
+        binding.checkListRcv.apply {
+            adapter = adapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            setHasFixedSize(false)
+        }
 
         checklistViewModel.checkList(requireContext()).observe(viewLifecycleOwner, {
             if (it.size > 0 && binding.checklistBlockAssert.visibility == View.VISIBLE) {
                 binding.checklistBlockAssert.visibility = View.GONE
             }
-            Log.e("RRR", it.toString())
             adapter.updateList(it)
         })
+
     }
 
     private fun convertArrayToJSONString(list: ArrayList<CheckListItemModel>): String {

@@ -24,7 +24,7 @@ class CheckListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         } else {
             checkListItemArray.addAll(dataList)
-            Log.e("RRR", "aboab "+ checkListItemArray.toString())
+            Log.e("RRR", "aboab $checkListItemArray")
             notifyDataSetChanged()
         }
     }

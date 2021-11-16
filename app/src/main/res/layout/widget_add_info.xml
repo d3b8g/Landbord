@@ -120,22 +120,13 @@
                 android:maxLength="32"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="6dp"
-            android:id="@+id/filledDateToField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:startIconDrawable="@drawable/ic_calendar_24"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="@string/date_to">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fieldDateTo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="32"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <net.d3b8g.landbord.customComponentsUI.InputDatePicker
+            android:id="@+id/widget_add_date_picker"
+            android:layout_marginTop="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="6dp"
             android:id="@+id/filledChatLinkField"

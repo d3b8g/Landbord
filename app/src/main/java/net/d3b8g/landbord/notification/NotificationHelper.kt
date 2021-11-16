@@ -1,40 +1,95 @@
 package net.d3b8g.landbord.notification
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.content.Context
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
+import android.graphics.Color
 import android.os.Build
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
+import android.util.Log
+import net.d3b8g.landbord.MainActivity
 import net.d3b8g.landbord.R
+import java.util.*
 
 object NotificationHelper {
 
-    fun Context.createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.app_name)
-            val descriptionText = getString(R.string.app_name)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(packageName, name, importance).apply {
-                description = descriptionText
-            }
+    private val pendingIntentFlag = if (Build.VERSION.SDK_INT > 30) PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
 
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+    fun Context.delayedNotificationAlarm() {
+
+        val setupTime = getNotificationDelay(this).split(':').map { it.toInt() }
+        val doRepeat = getNotificationStatus(this)
+
+        val calendar = Calendar.getInstance().run {
+            set(Calendar.HOUR_OF_DAY, setupTime[0])
+            set(Calendar.MINUTE, setupTime[1])
+            set(Calendar.SECOND, 1)
+            if (timeInMillis < Date().time) {
+                add(Calendar.DAY_OF_MONTH, 1)
+            }
+            timeInMillis
+        }
+
+        val intentNotification = Intent(this, NotificationReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intentNotification, pendingIntentFlag)
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+
+        if (doRepeat) {
+            alarmManager?.let {
+                it.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar,
+                    AlarmManager.INTERVAL_DAY,
+                    pendingIntent
+                )
+            }
         }
     }
 
-    fun Context.sendNotification() {
-        val builder = NotificationCompat.Builder(this , packageName)
-            .setSmallIcon(R.drawable.ic_contact_phone_24)
-            .setContentTitle("My notification")
-            .setContentText("Hello World!")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    fun Context.createNotification() {
+        val notificationChannelId = "1350"
 
+        val builder: Notification.Builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Notification.Builder(
+            this,
+            notificationChannelId
+        ) else Notification.Builder(this)
 
-        with(NotificationManagerCompat.from(this)) {
-            notify(123321 , builder.build())
+        Log.e("Notification", "createNotif")
+
+        val pendingIntent: PendingIntent = Intent(this, MainActivity::class.java).let { notificationIntent ->
+            PendingIntent.getActivity(this, 0, notificationIntent, pendingIntentFlag)
         }
+
+        builder
+            .setContentTitle("Добавьте информацию в календарь")
+            .setContentText("В вашем календаре еще не добавлена информация о новых жильцах.")
+            .setContentIntent(pendingIntent)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setTicker("Ticker text")
+            .setPriority(Notification.PRIORITY_HIGH) // for under android 26 compatibility
+            .build()
+
+        // depending on the Android API that we're dealing with we will have
+        // to use a specific method to create the notification
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                notificationChannelId ,
+                "Endless Service notifications channel" ,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).let {
+                it.description = "Endless Service channel"
+                it.enableLights(true)
+                it.lightColor = Color.RED
+                it.enableVibration(true)
+                it.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                it.vibrationPattern =
+                    longArrayOf(100 , 200 , 300 , 400 , 500 , 400 , 300 , 200 , 400)
+                it
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+        notificationManager.notify(1, builder.build())
     }
 }

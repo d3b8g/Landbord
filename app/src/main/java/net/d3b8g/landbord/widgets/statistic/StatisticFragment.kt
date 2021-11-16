@@ -31,7 +31,7 @@ class StatisticFragment : Fragment(R.layout.widget_statistics) {
             binding.apply {
 
                 var counterBusyDays = 0
-                it.forEachIndexed { index, bookingData ->
+                it.forEachIndexed { _ , bookingData ->
                     val res = parseDateToModel(bookingData.bookingEnd).day.toInt() + 1 - parseDateToModel(bookingData.bookingDate).day.toInt()
                     counterBusyDays += res
                 }

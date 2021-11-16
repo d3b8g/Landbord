@@ -2,6 +2,7 @@ package net.d3b8g.landbord
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -12,13 +13,17 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.ActivityMainBinding
+import net.d3b8g.landbord.notification.NotificationHelper.delayedNotificationAlarm
+import net.d3b8g.landbord.notification.getNotificationStatus
+import net.d3b8g.landbord.ui.add.AddViewModel
+import net.d3b8g.landbord.ui.add.AddViewState
 
 class MainActivity : AppCompatActivity() {
 
+    private val addViewModel: AddViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,31 +32,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        lifecycleScope.launch {
-            //removeDB()
-            //insertBooking()
-        }
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
-        this.apply {
-            //createNotificationChannel()
-            //sendNotification()
-        }
+        //Send Notification
+        if (getNotificationStatus(this)) this.delayedNotificationAlarm()
 
-
+        //Init preferences fragments
         PreferenceManager.getDefaultSharedPreferences(this).apply {
-                if (!getBoolean("have_flats", false)) {
-                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_add)
-                    navView.visibility = View.GONE
-                }
-                if (!getBoolean("check_list_visible", true)) {
-                    navView.menu.findItem(R.id.navigation_checklist).isVisible = false
-                }
+            if (!getBoolean("have_flats", false)) {
+                addViewModel.state.value = AddViewState.NEW_USER
+                findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_add)
+                navView.visibility = View.GONE
             }
+            if (!getBoolean("check_list_visible", true)) {
+                navView.menu.findItem(R.id.navigation_checklist).isVisible = false
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -79,24 +78,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
         super.onDestroy()
-    }
-
-    suspend fun removeDB() = withContext(Dispatchers.IO) {
-        val db = FlatDatabase.getInstance(applicationContext).flatDatabaseDao
-        db.deleteAll()
-    }
-
-    suspend fun insertBooking() = withContext(Dispatchers.IO) {
-        val db = BookingDatabase.getInstance(applicationContext).bookedDatabaseDao
-        db.insert(BookingData(
-            id = 0,
-            flatId = 0,
-            bookingDate = "2021-8-4",
-            deposit = 3540,
-            username = "Pavel Milkov",
-            userPhone = 89062188832,
-            bookingEnd = "2021-08-04",
-            bookingChatLink = ""
-        ))
     }
 }
