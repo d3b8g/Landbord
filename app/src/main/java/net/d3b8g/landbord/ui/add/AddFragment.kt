@@ -16,12 +16,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.getTodayDate
+import net.d3b8g.landbord.components.Converter.getTodayUnix
 import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatData
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentAddBinding
+import net.d3b8g.landbord.notification.appLog
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
@@ -50,7 +52,10 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                 binding.closeAddFragment.visibility = View.VISIBLE
             }
             AddViewState.NEW_USER -> {
-                // Nothing to do, just went
+                val limitDate = getTodayUnix() + ((86400 * 7) * 1000)
+                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                    putLong("ads_limit", limitDate)
+                }
             }
         }
 

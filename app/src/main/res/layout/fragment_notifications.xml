@@ -65,7 +65,6 @@
         android:layout_gravity="center"
         android:padding="32dp"
         android:textStyle="bold"
-        android:textColor="@color/black"
         android:textSize="18sp"
         android:text="@string/notifications_plug"
         android:layout_width="wrap_content"

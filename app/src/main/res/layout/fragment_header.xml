@@ -19,7 +19,7 @@
             android:id="@+id/fragment_header_title"
             android:layout_centerInParent="true"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@color/textColor"
             android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

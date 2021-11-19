@@ -58,8 +58,7 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
             deposit = binding.fieldDeposit.text!!.toString().toInt(),
             username = binding.fieldUsername.text!!.toString(),
             userPhone = binding.fieldPhone.text!!.toString().toLong(),
-            //bookingEnd = binding.fieldDateTo.text.toString(),
-            bookingEnd = "2021-11-14",
+            bookingEnd = binding.widgetAddDatePicker.pickedDateString,
             bookingChatLink = binding.fieldChatLink.text!!.toString()
         )
         val insertData = db.insert(bookingData)
@@ -118,12 +117,10 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                //if (isDateFree(model.chosenCalendarDate.value!!, binding.fieldDateTo.text.toString())) {
-                if (isDateFree(model.chosenCalendarDate.value!!,"2021-11-31")) {
-                    canUpdate = true
-                } else {
+                val chosenDate = model.chosenCalendarDate.value!!
+                canUpdate = isDateFree(chosenDate,chosenDate.dropLast(2)+"31")
+                if (!canUpdate) {
                     withContext(Dispatchers.Main) {
-                        canUpdate = false
                         Snackbar.make(
                             binding.root,
                             getString(R.string.dates_busy) ,

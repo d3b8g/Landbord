@@ -26,6 +26,7 @@ class InputDatePicker @JvmOverloads constructor(
     private val fragmentParent: FragmentManager = (context as MainActivity).supportFragmentManager
 
     var pickedDate: Long = 0
+    var pickedDateString: String = "2021-00-00"
 
     init {
         inflate(context , R.layout.input_date_picker , this)
@@ -46,6 +47,7 @@ class InputDatePicker @JvmOverloads constructor(
                 datePicker.addOnPositiveButtonClickListener {
                     val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
                     pickedDate = it
+                    pickedDateString = chosenDate
                     input.setText(chosenDate)
                 }
                 datePicker.addOnNegativeButtonClickListener {

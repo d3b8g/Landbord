@@ -57,5 +57,16 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.3.0'
     implementation 'com.google.code.gson:gson:2.8.9'
 
+    //ads
+    implementation 'com.google.android.gms:play-services-ads:20.4.0'
+    constraints {
+        implementation('androidx.work:work-runtime:2.7.0') {
+            because '''androidx.work:work-runtime:2.1.0 pulled from play-services-ads
+                   has a bug using PendingIntent without FLAG_IMMUTABLE or
+                   FLAG_MUTABLE and will fail in apps targeting S+.'''
+        }
+    }
 
+    //payments
+    implementation 'com.anjlab.android.iab.v3:library:2.0.1'
 }

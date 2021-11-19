@@ -1,5 +1,6 @@
 package net.d3b8g.landbord
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -13,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.d3b8g.landbord.customComponentsUI.PaymentsDetails
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.ActivityMainBinding
@@ -77,6 +79,8 @@ class MainActivity : AppCompatActivity() {
                 bookingBase.deleteAll()
             }
         }
+        PaymentsDetails.billingProcessor?.release()
         super.onDestroy()
     }
+
 }
