@@ -1,6 +1,5 @@
 package net.d3b8g.landbord
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -14,12 +13,12 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.d3b8g.landbord.customComponentsUI.PaymentsDetails
+import net.d3b8g.landbord.payments.PaymentsDetails
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.ActivityMainBinding
 import net.d3b8g.landbord.notification.NotificationHelper.delayedNotificationAlarm
-import net.d3b8g.landbord.notification.getNotificationStatus
+import net.d3b8g.landbord.components.getNotificationStatus
 import net.d3b8g.landbord.ui.add.AddViewModel
 import net.d3b8g.landbord.ui.add.AddViewState
 
@@ -53,6 +52,11 @@ class MainActivity : AppCompatActivity() {
                 navView.menu.findItem(R.id.navigation_checklist).isVisible = false
             }
         }
+
+        addViewModel.tabbarHide.observe(this, {
+            if (it) navView.visibility = View.GONE
+            else navView.visibility = View.VISIBLE
+        })
     }
 
     override fun onBackPressed() {

@@ -42,7 +42,17 @@
         android:layout_height="wrap_content" />
 
     <CheckBox
-        android:text="Is repeatble"
+        android:id="@+id/checkListIsRepeatable"
+        android:text="Is repeatable"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/checkListSaveNew"
+        android:text="@string/save"
+        android:textAllCaps="false"
         android:layout_marginEnd="12dp"
         android:layout_marginStart="12dp"
         android:layout_width="match_parent"

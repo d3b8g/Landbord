@@ -9,6 +9,8 @@ import android.os.Build
 import android.util.Log
 import net.d3b8g.landbord.MainActivity
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.getNotificationDelay
+import net.d3b8g.landbord.components.getNotificationStatus
 import java.util.*
 
 object NotificationHelper {

@@ -9,6 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import net.d3b8g.landbord.components.Converter.getTodayDate
 import net.d3b8g.landbord.components.Converter.getTodayFullTime
+import net.d3b8g.landbord.components.setNotificationsJson
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.notification.NotificationHelper.createNotification
 import net.d3b8g.landbord.ui.notifications.NotificationsAdapterModel

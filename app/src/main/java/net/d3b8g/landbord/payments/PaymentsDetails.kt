@@ -1,4 +1,4 @@
-package net.d3b8g.landbord.customComponentsUI
+package net.d3b8g.landbord.payments
 
 import androidx.lifecycle.MutableLiveData
 import com.anjlab.android.iab.v3.BillingProcessor

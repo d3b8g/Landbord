@@ -1,3 +1,5 @@
+@file:Suppress("NonExhaustiveWhenStatementMigration")
+
 package net.d3b8g.landbord.ui.add
 
 import android.os.Bundle
@@ -23,7 +25,6 @@ import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatData
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentAddBinding
-import net.d3b8g.landbord.notification.appLog
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
@@ -56,6 +57,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                 PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
                     putLong("ads_limit", limitDate)
                 }
+                addViewModel.tabbarHide.value = true
             }
         }
 
@@ -99,6 +101,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         lifecycleScope.launch {
             addNewFlat()
         }
+
+        addViewModel.tabbarHide.value = false
         val navigation = AddFragmentDirections.actionNavigationAddToNavigationHome()
         findNavController().navigate(navigation)
     }

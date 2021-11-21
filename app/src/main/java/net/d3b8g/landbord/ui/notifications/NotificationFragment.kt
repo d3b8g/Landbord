@@ -20,9 +20,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.*
 import net.d3b8g.landbord.customComponentsUI.ComponentsActions.vibrateDevice
 import net.d3b8g.landbord.databinding.FragmentNotificationsBinding
-import net.d3b8g.landbord.notification.*
 import net.d3b8g.landbord.notification.NotificationHelper.delayedNotificationAlarm
 import java.text.SimpleDateFormat
 import java.util.*

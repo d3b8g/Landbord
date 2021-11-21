@@ -60,4 +60,5 @@
     <string name="be_our_sponsor">Be our sponsor</string>
     <string name="trial_banner_text">To hide this banner and prevent show advertisements in app become our app-sponsor. Just for 5$ you will make smile app developers.</string>
     <string name="payments_error">Payments error. Please try later.</string>
+    <string name="error_name_check_list">Cant contain less than 3 char</string>
 </resources>

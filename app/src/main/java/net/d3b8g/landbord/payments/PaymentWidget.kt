@@ -1,12 +1,10 @@
-package net.d3b8g.landbord.customComponentsUI
+package net.d3b8g.landbord.payments
 
 import android.content.Context
-import android.net.Uri
 import android.util.AttributeSet
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.preference.PreferenceManager
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.PurchaseInfo
@@ -14,11 +12,10 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.MainActivity
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.getTodayUnix
+import net.d3b8g.landbord.payments.PaymentsDetails
 import java.util.*
 
 /*

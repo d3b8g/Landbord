@@ -12,6 +12,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import net.d3b8g.landbord.MainActivity
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.Converter.getTodayDate
 import java.text.SimpleDateFormat
 
 @SuppressLint("SimpleDateFormat")
@@ -57,7 +58,7 @@ class InputDatePicker @JvmOverloads constructor(
         }
     }
 
-    fun isDateCurrent(selectedDate: String): Boolean =
+    fun isDateCurrent(selectedDate: String = getTodayDate()): Boolean =
         when (true) {
             pickedDate == 0L -> {
                 filledInput.error = resources.getString(R.string.field_empty)

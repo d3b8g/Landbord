@@ -34,20 +34,11 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list) {
             adapter.updateList(it)
         })
 
-    }
-
-    private fun convertArrayToJSONString(list: ArrayList<CheckListItemModel>): String {
-        //putString("check_list_prefs", convertArrayToJSONString(aboab))
-        val correctString = StringBuilder()
-        list.forEachIndexed { index, checkListItemModel ->
-            correctString.append("{")
-            correctString.append("\"title\":\"${checkListItemModel.title}\",")
-            correctString.append("\"isCompleted\":${checkListItemModel.isCompleted},")
-            correctString.append("\"isRepeatable\":${checkListItemModel.isRepeatable},")
-            correctString.append("\"nextRepeat\":\"${checkListItemModel.nextRepeat}\"")
-            if (index != list.size - 1) correctString.append("},")
-            else correctString.append("}")
+        binding.checkListAddNew.setOnClickListener {
+            binding.addNewModal.apply {
+                visibility = View.VISIBLE
+                slideUp()
+            }
         }
-        return "[$correctString]"
     }
 }
