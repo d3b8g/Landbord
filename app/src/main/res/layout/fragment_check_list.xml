@@ -4,61 +4,77 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <!-- Header -->
-    <net.d3b8g.landbord.customComponentsUI.FragmentHeader
-        android:id="@+id/check_list_header"
-        android:layout_alignParentTop="true"
-        app:headerTitle="@string/checklist"
+    <RelativeLayout
+        android:id="@+id/check_list_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
 
-    <!-- Assert that empty list -->
-    <LinearLayout
-        android:id="@+id/checklist_block_assert"
-        android:layout_below="@id/check_list_header"
-        android:paddingTop="12dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/widget_shape"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_gravity="center"
-            android:text="@string/empty_data_on_check_list"
-            android:layout_width="wrap_content"
+        <net.d3b8g.landbord.customComponentsUI.FragmentHeader
+            android:id="@+id/check_list_header"
+            android:layout_alignParentTop="true"
+            app:headerTitle="@string/checklist"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <!-- Assert that empty list -->
         <LinearLayout
-            android:weightSum="2"
-            android:gravity="center"
+            android:id="@+id/checklist_block_assert"
+            android:layout_below="@id/check_list_header"
+            android:paddingTop="12dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/widget_shape"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/check_list_add_new"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="@string/add"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_gravity="center"
+                android:text="@string/empty_data_on_check_list"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <Button
-                android:textColor="@color/colorRed"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="@string/hide_tab_check_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:weightSum="2"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/check_list_add_new"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:text="@string/add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:textColor="@color/colorRed"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:text="@string/hide_tab_check_list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-    <!-- Adapter list -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/check_list_rcv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/check_list_header" />
+        <!-- Adapter list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/check_list_rcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/check_list_header" />
 
+        <Button
+            android:id="@+id/check_list_add_new_btn"
+            android:visibility="gone"
+            android:text="@string/add_new_check_list"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <!-- Header -->
     <net.d3b8g.landbord.ui.checklist.CheckListModalPage
         android:id="@+id/addNewModal"
         android:visibility="gone"

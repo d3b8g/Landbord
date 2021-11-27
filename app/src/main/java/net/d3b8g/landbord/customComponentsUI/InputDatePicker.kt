@@ -3,6 +3,7 @@ package net.d3b8g.landbord.customComponentsUI
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentManager
@@ -26,8 +27,10 @@ class InputDatePicker @JvmOverloads constructor(
     private val input: TextInputEditText
     private val fragmentParent: FragmentManager = (context as MainActivity).supportFragmentManager
 
-    var pickedDate: Long = 0
+    private var pickedDate: Long = 0
     var pickedDateString: String = "2021-00-00"
+
+    private var isOpenPicker = false
 
     init {
         inflate(context , R.layout.input_date_picker , this)
@@ -36,26 +39,38 @@ class InputDatePicker @JvmOverloads constructor(
         filledInput = findViewById(R.id.filledInputDatePicker)
         input = findViewById(R.id.fieldInputDatePicker)
 
-        input.onFocusChangeListener = OnFocusChangeListener { _ , hasFocus ->
+        input.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            openDatePicker(hasFocus)
+        }
+        input.setOnClickListener { openDatePicker() }
+    }
 
+    private fun openDatePicker(hasFocus: Boolean = true) {
+        if (!isOpenPicker && hasFocus) {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(resources.getString(R.string.date_to))
                 .build()
 
-            if (hasFocus) {
-                filledInput.hint = resources.getString(R.string.date_pattern_format)
-                datePicker.show(fragmentParent , "DateOfEnd")
-                datePicker.addOnPositiveButtonClickListener {
-                    val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
-                    pickedDate = it
-                    pickedDateString = chosenDate
-                    input.setText(chosenDate)
-                }
-                datePicker.addOnNegativeButtonClickListener {
-                    it.clearFocus()
-                }
+            filledInput.hint = resources.getString(R.string.date_pattern_format)
+            datePicker.show(fragmentParent , "DateOfEnd")
+            datePicker.addOnPositiveButtonClickListener {
+                val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
+                pickedDate = it
+                pickedDateString = chosenDate
+                input.setText(chosenDate)
             }
+            isOpenPicker = true
+            datePicker.addOnNegativeButtonClickListener {
+                it.clearFocus()
+            }
+            datePicker.addOnDismissListener { isOpenPicker = false }
         }
+    }
+
+    fun clearInput() {
+        input.setText("")
+        input.clearFocus()
+        filledInput.error = null
     }
 
     fun isDateCurrent(selectedDate: String = getTodayDate()): Boolean =

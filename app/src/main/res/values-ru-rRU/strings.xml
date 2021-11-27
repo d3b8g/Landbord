@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Landbord</string>
+    <string name="app_name">Арендодатель - приложение для менеджмента</string>
     <string name="title_home">Главная</string>
     <string name="title_income">Доход</string>
     <string name="title_add">Добавить</string>
@@ -56,4 +56,10 @@
     <string name="notification_disable">Уведомления отключены</string>
     <string name="notification_enable">Уведомления включены</string>
     <string name="notification_center">Центр уведомлений</string>
+    <string name="add_new_check_list">Добавить предмет</string>
+    <string name="become_our_sponsor">Стань спонсором за 250 руб.</string>
+    <string name="be_our_sponsor">Будь нашим споносором</string>
+    <string name="trial_banner_text">Чтобы скрыть этот баннер и предотвратить показ рекламы в приложении, станьте нашим спонсором приложения. Всего за 250 руб. вы заставите улыбнуться разработчика.</string>
+    <string name="payments_error">Ошибка оплаты. Повторите позже</string>
+    <string name="error_name_check_list">Не может содержать менее 3 символов</string>
 </resources>

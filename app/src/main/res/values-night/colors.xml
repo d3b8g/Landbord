@@ -2,4 +2,5 @@
 <resources>
     <color name="textColor">@color/white</color>
     <color name="widgetBackground">#232629</color>
+    <color name="layoutBackground">@color/black</color>
 </resources>

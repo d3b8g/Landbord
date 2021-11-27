@@ -14,9 +14,12 @@ interface CheckListDatabaseDao {
     @Insert
     fun insert(data: CheckListData): Long
 
-    @Update
+    @Update(entity = CheckListData::class)
     fun update(data: CheckListData)
 
     @Query("SELECT id from checklists WHERE clTitle = :item")
     fun selectSimilarItem(item: String): Int
+
+    @Query("SELECT * from checklists")
+    fun getAllItems(): List<CheckListData>
 }

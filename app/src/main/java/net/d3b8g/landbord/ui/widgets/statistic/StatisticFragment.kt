@@ -1,4 +1,4 @@
-package net.d3b8g.landbord.widgets.statistic
+package net.d3b8g.landbord.ui.widgets.statistic
 
 import android.annotation.SuppressLint
 import android.os.Bundle

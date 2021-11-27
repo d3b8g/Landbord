@@ -3,6 +3,7 @@ package net.d3b8g.landbord.ui.checklist
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.View
 import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.CheckBox
@@ -26,35 +27,30 @@ class CheckListModalPage @JvmOverloads constructor(
 
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.IO + job)
+    private var modalState: CheckListModalViewStates = CheckListModalViewStates.ADD_NEW
+
+    private val header: FragmentHeader
+    private val nameCL: TextInputEditText
+    private val nameLayout: TextInputLayout
+    private val inputDate: InputDatePicker
+    private val isRepeatable: CheckBox
 
     init {
         inflate(context, R.layout.modal_page_check_list, this)
-
         orientation = VERTICAL
-        gravity = Gravity.BOTTOM
 
-        val header = findViewById<FragmentHeader>(R.id.checkListAddHeader)
-        header.setRightButtonIcon(
-           ContextCompat.getDrawable(context, R.drawable.ic_close)!!
-        ) {
-            val animationClose = TranslateAnimation(0F,0F,0F, this.height.toFloat()).apply {
-                duration = 300
-                fillAfter = true
-            }
-            this.startAnimation(animationClose)
-        }
-
-        val nameCL = findViewById<TextInputEditText>(R.id.fieldCheckListTitle)
-        val nameLayout = findViewById<TextInputLayout>(R.id.filledCheckListTitle)
-        val inputDate = findViewById<InputDatePicker>(R.id.checkListRepeatDate)
-        val isRepeatable = findViewById<CheckBox>(R.id.checkListIsRepeatable)
+        header = findViewById(R.id.checkListAddHeader)
+        nameCL = findViewById(R.id.fieldCheckListTitle)
+        nameLayout = findViewById(R.id.filledCheckListTitle)
+        inputDate = findViewById(R.id.checkListRepeatDate)
+        isRepeatable = findViewById(R.id.checkListIsRepeatable)
 
         findViewById<Button>(R.id.checkListSaveNew).setOnClickListener {
             if (nameCL.text!!.length < 3) {
                 nameLayout.error = resources.getString(R.string.error_name_check_list)
             }
 
-            if (inputDate.isDateCurrent() && nameCL.text!!.length < 3) {
+            if (inputDate.isDateCurrent() && nameCL.text!!.length > 3) {
                 val checkListDatabase = CheckListDatabase.getInstance(context).checkListDatabaseDao
 
                 scope.launch {
@@ -66,19 +62,47 @@ class CheckListModalPage @JvmOverloads constructor(
                             isRepeatable = isRepeatable.isChecked
                         )
 
-                        if (it > 0) checkListDatabase.update(clModel)
+                        if (it > 0 || modalState == CheckListModalViewStates.EDIT_ITEM) {
+                            checkListDatabase.update(clModel)
+                            appLog(this, "${checkListDatabase.update(clModel)} acad ${clModel}")
+                        }
                         else checkListDatabase.insert(clModel)
                     }
                 }
             }
         }
+
+    }
+
+    fun setupModalPageState(state: CheckListModalViewStates) {
+        modalState = when(state) {
+            CheckListModalViewStates.ADD_NEW -> {
+                header.setTitleText(resources.getString(R.string.add_new_check_list))
+                state
+            }
+            CheckListModalViewStates.EDIT_ITEM -> {
+                header.setTitleText(resources.getString(R.string.edit_item))
+                state
+            }
+        }
+    }
+
+    fun onCloseModalView(onClickListener: OnClickListener) {
+        header.setRightButtonIcon(ContextCompat.getDrawable(context, R.drawable.ic_close)!!, onClickListener)
+
+        nameCL.setText("")
+        nameCL.clearFocus()
+        nameLayout.error = null
+        isRepeatable.isChecked = false
+        inputDate.clearInput()
     }
 
     fun slideUp() {
         val animationOpen = TranslateAnimation(0F,0F, this.height.toFloat(), 0f).apply {
-            duration = 1500
+            duration = 200
             fillAfter = true
         }
         this.startAnimation(animationOpen)
     }
+
 }

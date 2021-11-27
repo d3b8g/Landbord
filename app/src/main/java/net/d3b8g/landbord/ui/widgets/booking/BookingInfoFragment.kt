@@ -1,4 +1,4 @@
-package net.d3b8g.landbord.widgets.booking
+package net.d3b8g.landbord.ui.widgets.booking
 
 import android.Manifest
 import android.annotation.SuppressLint
