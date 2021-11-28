@@ -6,12 +6,8 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.view.View
-import android.view.animation.AlphaAnimation
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.ContextCompat.getSystemService
 import net.d3b8g.landbord.R
-import net.d3b8g.landbord.customComponentsUI.ComponentsActions.setBackgroundTransparent
 
 object ComponentsActions {
 
@@ -44,7 +40,6 @@ object ComponentsActions {
 
     fun View.setBackgroundTransparent() {
         alpha = 0.15f
-
         setBackgroundColor(this.context.getColor(R.color.colorMoreGray))
     }
 

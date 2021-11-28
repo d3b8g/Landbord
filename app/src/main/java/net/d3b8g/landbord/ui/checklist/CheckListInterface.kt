@@ -4,5 +4,7 @@ interface CheckListInterface {
 
     fun updateRecyclerViewList()
 
-    fun openAddItemModalView(modalState: CheckListModalViewStates)
+    fun openAddItemModalView(modalState: CheckListModalViewStates, selectedId: Int = 0)
+
+    fun onCloseModalView()
 }

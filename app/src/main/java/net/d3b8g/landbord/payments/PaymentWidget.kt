@@ -15,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 import net.d3b8g.landbord.MainActivity
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.getTodayUnix
-import net.d3b8g.landbord.payments.PaymentsDetails
 import java.util.*
 
 /*

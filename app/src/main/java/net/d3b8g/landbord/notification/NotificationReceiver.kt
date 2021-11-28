@@ -10,7 +10,9 @@ import kotlinx.coroutines.launch
 import net.d3b8g.landbord.components.Converter.getTodayDate
 import net.d3b8g.landbord.components.Converter.getTodayFullTime
 import net.d3b8g.landbord.components.setNotificationsJson
+import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
+import net.d3b8g.landbord.database.Checklists.CheckListDatabase
 import net.d3b8g.landbord.notification.NotificationHelper.createNotification
 import net.d3b8g.landbord.ui.notifications.NotificationsAdapterModel
 import net.d3b8g.landbord.ui.notifications.NotificationsDelayType
@@ -22,18 +24,27 @@ class NotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(ct: Context , p1: Intent?) {
         val dbBooking = BookingDatabase.getInstance(ct).bookedDatabaseDao
+        val checkListDatabase = CheckListDatabase.getInstance(ct).checkListDatabaseDao
+
         val today = getTodayDate()
         val fullDate = getTodayFullTime()
 
         scope.launch {
             val data = dbBooking.getListByMonth("${today.dropLast(2)}01",
                 "${today.dropLast(2)}31")
+            val haveCheckListReminder = checkListDatabase.getTodayList(today)
 
             if (data.isNullOrEmpty()) {
-                ct.createNotification()
+                ct.createNotification(arrayListOf(BookingData::class.java.simpleName))
                 setNotificationsJson(ct, NotificationsAdapterModel(
-                    id = 0,
                     type = NotificationsDelayType.EMPTY_DATA,
+                    date = fullDate
+                ))
+            }
+            if (haveCheckListReminder.isNotEmpty()) {
+                ct.createNotification(haveCheckListReminder)
+                setNotificationsJson(ct, NotificationsAdapterModel(
+                    type = NotificationsDelayType.CHECK_LIST,
                     date = fullDate
                 ))
             }

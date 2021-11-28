@@ -16,12 +16,12 @@ import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.convertDateToPattern
 import net.d3b8g.landbord.components.Converter.convertUnixToDate
 import net.d3b8g.landbord.components.Converter.getTodayDate
-import net.d3b8g.landbord.payments.PaymentsDetails.isSponsor
 import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentHomeBinding
 import net.d3b8g.landbord.models.BookingInfoModel
+import net.d3b8g.landbord.payments.PaymentsDetails.isSponsor
 import net.d3b8g.landbord.ui.add.AddViewModel
 import net.d3b8g.landbord.ui.add.AddViewState
 import net.d3b8g.landbord.ui.widgets.add_info.AddInfoFragment

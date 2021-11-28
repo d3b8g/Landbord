@@ -22,4 +22,10 @@ interface CheckListDatabaseDao {
 
     @Query("SELECT * from checklists")
     fun getAllItems(): List<CheckListData>
+
+    @Query("DELETE from checklists WHERE id = :id")
+    fun deleteCurrentId(id: Int)
+
+    @Query("SELECT * from checklists WHERE reminderDate = :date")
+    fun getTodayList(date: String): List<CheckListData>
 }

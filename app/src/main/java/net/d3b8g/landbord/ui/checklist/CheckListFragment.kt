@@ -1,21 +1,15 @@
 package net.d3b8g.landbord.ui.checklist
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AlphaAnimation
-import android.view.animation.TranslateAnimation
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
-import net.d3b8g.landbord.customComponentsUI.ComponentsActions.closeKeyBoard
 import net.d3b8g.landbord.customComponentsUI.ComponentsActions.setBackgroundTransparent
 import net.d3b8g.landbord.customComponentsUI.ComponentsActions.setBackgroundTransparentVisible
 import net.d3b8g.landbord.database.Checklists.CheckListDatabase
@@ -63,32 +57,24 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list), CheckListInter
         }
     }
 
-    override fun openAddItemModalView(modalState: CheckListModalViewStates) {
+    override fun openAddItemModalView(modalState: CheckListModalViewStates, selectedId: Int) {
         with(binding) {
             checkListLayout.setBackgroundTransparent()
             addNewModal.apply {
                 visibility = View.VISIBLE
-                onCloseModalView {
-                    val animationClose =
-                        TranslateAnimation(0F, 0F, 0F, this.height.toFloat()).apply {
-                            duration = 200
-                            fillAfter = true
-                        }
-
-                    this.startAnimation(animationClose)
-                    this.closeKeyBoard()
-
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        delay(300)
-                        visibility = View.GONE
-                        checkListAddNewBtn.visibility = View.VISIBLE
-                        checkListLayout.setBackgroundTransparentVisible()
-                    }
-                }
+                setFragmentInterfaceCallback(this@CheckListFragment)
+                setupModalPageState(modalState, selectedId)
                 slideUp()
             }
             checkListAddNewBtn.visibility = View.GONE
-            addNewModal.setupModalPageState(modalState)
+        }
+    }
+
+    override fun onCloseModalView() {
+        with(binding) {
+            addNewModal.visibility = View.GONE
+            checkListAddNewBtn.visibility = View.VISIBLE
+            checkListLayout.setBackgroundTransparentVisible()
         }
     }
 }

@@ -3,7 +3,6 @@ package net.d3b8g.landbord.customComponentsUI
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.LinearLayout
 import androidx.fragment.app.FragmentManager
@@ -52,18 +51,23 @@ class InputDatePicker @JvmOverloads constructor(
                 .build()
 
             filledInput.hint = resources.getString(R.string.date_pattern_format)
-            datePicker.show(fragmentParent , "DateOfEnd")
-            datePicker.addOnPositiveButtonClickListener {
-                val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
-                pickedDate = it
-                pickedDateString = chosenDate
-                input.setText(chosenDate)
+            datePicker.apply {
+                show(fragmentParent , "DateOfEnd")
+                addOnPositiveButtonClickListener {
+                    val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
+                    pickedDate = it
+                    pickedDateString = chosenDate
+                    input.setText(chosenDate)
+                }
+                addOnNegativeButtonClickListener {
+                    it.clearFocus()
+                }
+                addOnDismissListener {
+                    input.clearFocus()
+                    isOpenPicker = false
+                }
             }
             isOpenPicker = true
-            datePicker.addOnNegativeButtonClickListener {
-                it.clearFocus()
-            }
-            datePicker.addOnDismissListener { isOpenPicker = false }
         }
     }
 

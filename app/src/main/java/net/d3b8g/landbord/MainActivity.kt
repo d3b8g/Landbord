@@ -13,12 +13,12 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.d3b8g.landbord.payments.PaymentsDetails
+import net.d3b8g.landbord.components.getNotificationStatus
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.ActivityMainBinding
 import net.d3b8g.landbord.notification.NotificationHelper.delayedNotificationAlarm
-import net.d3b8g.landbord.components.getNotificationStatus
+import net.d3b8g.landbord.payments.PaymentsDetails
 import net.d3b8g.landbord.ui.add.AddViewModel
 import net.d3b8g.landbord.ui.add.AddViewState
 

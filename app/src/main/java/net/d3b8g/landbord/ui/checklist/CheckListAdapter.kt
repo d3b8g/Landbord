@@ -1,22 +1,20 @@
 package net.d3b8g.landbord.ui.checklist
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import net.d3b8g.landbord.R
-import net.d3b8g.landbord.components.appLog
+import net.d3b8g.landbord.components.Converter
+import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.database.Checklists.CheckListData
-import net.d3b8g.landbord.database.Checklists.CheckListDatabase
-import net.d3b8g.landbord.models.CheckListItemModel
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CheckListAdapter(val aboba: CheckListInterface) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -44,7 +42,7 @@ class CheckListAdapter(val aboba: CheckListInterface) : RecyclerView.Adapter<Rec
 
     inner class CheckListAdapterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        @SuppressLint("SetTextI18n")
+        @SuppressLint("SetTextI18n", "SimpleDateFormat")
         fun bind(item: CheckListData) {
             val checkBox = itemView.findViewById<CheckBox>(R.id.check_list_check_box)
             val textOfRepeat = itemView.findViewById<TextView>(R.id.check_list_when_repeat)
@@ -62,10 +60,15 @@ class CheckListAdapter(val aboba: CheckListInterface) : RecyclerView.Adapter<Rec
             }
 
             changeRepeat.setOnClickListener {
-                aboba.openAddItemModalView(CheckListModalViewStates.EDIT_ITEM)
+                aboba.openAddItemModalView(CheckListModalViewStates.EDIT_ITEM, item.id)
             }
 
-            textOfRepeat.text = "${itemView.context.getString(R.string.check_list_next_repeat)} ${item.nextRepeat}"
+            val parseReminderDate = parseDateToModel(item.reminderDate)
+            val dateReminder = if (parseReminderDate.year == SimpleDateFormat("yyyy").format(Date())) {
+                Converter.convertDate(parseReminderDate.month.toInt(), parseReminderDate.day.toInt())
+            } else item.reminderDate
+
+            textOfRepeat.text = "${itemView.context.getString(R.string.check_list_reminder_to_buy)}: $dateReminder"
         }
     }
 }

@@ -62,4 +62,11 @@
     <string name="payments_error">Payments error. Please try later.</string>
     <string name="error_name_check_list">Cant contain less than 3 char</string>
     <string name="edit_item">Edit item</string>
+    <string name="delete">Delete</string>
+    <string name="check_list_reminder_to_buy">Reminder to buy</string>
+    <string name="dont_forget_check_app">Dont forget to check the app, you have some new content.</string>
+    <string name="notification_should_buy">"Reminder: You have to buy "</string>
+    <string name="notification_havent_today_record">You haven\'t tenant today, add any?</string>
+    <string name="reminder">Reminder</string>
+    <string name="notification_add_new_calendar">Add new information to calendar.</string>
 </resources>

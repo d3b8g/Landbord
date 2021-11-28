@@ -20,6 +20,6 @@ data class CheckListData (
     @ColumnInfo(name = "isRepeatable")
     val isRepeatable: Boolean = true,
 
-    @ColumnInfo(name = "nextRepeat")
-    val nextRepeat: String = getTodayDate()
+    @ColumnInfo(name = "reminderDate")
+    val reminderDate: String = getTodayDate()
 )

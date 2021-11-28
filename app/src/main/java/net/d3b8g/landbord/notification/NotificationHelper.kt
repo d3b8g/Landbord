@@ -6,11 +6,13 @@ import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import net.d3b8g.landbord.MainActivity
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.HelperComponents
 import net.d3b8g.landbord.components.getNotificationDelay
 import net.d3b8g.landbord.components.getNotificationStatus
+import net.d3b8g.landbord.database.Booking.BookingData
+import net.d3b8g.landbord.database.Checklists.CheckListData
 import java.util.*
 
 object NotificationHelper {
@@ -49,7 +51,7 @@ object NotificationHelper {
         }
     }
 
-    fun Context.createNotification() {
+    fun Context.createNotification(data: List<Any>) {
         val notificationChannelId = "1350"
 
         val builder: Notification.Builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Notification.Builder(
@@ -57,18 +59,34 @@ object NotificationHelper {
             notificationChannelId
         ) else Notification.Builder(this)
 
-        Log.e("Notification", "createNotif")
-
         val pendingIntent: PendingIntent = Intent(this, MainActivity::class.java).let { notificationIntent ->
             PendingIntent.getActivity(this, 0, notificationIntent, pendingIntentFlag)
         }
 
+        var notificationContentText = ""
+        var notificationContentTitle = ""
+
+        when(data[0]::class.java.simpleName) {
+            CheckListData::class.java.simpleName -> {
+                notificationContentText = "${getString(R.string.notification_should_buy)} " +
+                        (data as List<CheckListData>).joinToString(", ") { it.title }
+                notificationContentTitle = getString(R.string.reminder)
+            }
+            BookingData::class.java.simpleName -> {
+                notificationContentText = getString(R.string.notification_havent_today_record)
+                notificationContentTitle = getString(R.string.notification_add_new_calendar)
+            }
+            else -> {
+                notificationContentText = getString(R.string.dont_forget_check_app)
+            }
+        }
+
+
         builder
-            .setContentTitle("Добавьте информацию в календарь")
-            .setContentText("В вашем календаре еще не добавлена информация о новых жильцах.")
+            .setContentTitle(notificationContentTitle)
+            .setContentText(notificationContentText)
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setTicker("Ticker text")
             .setPriority(Notification.PRIORITY_HIGH) // for under android 26 compatibility
             .build()
 
@@ -92,6 +110,6 @@ object NotificationHelper {
             }
             notificationManager.createNotificationChannel(channel)
         }
-        notificationManager.notify(1, builder.build())
+        notificationManager.notify(HelperComponents.randomInt(), builder.build())
     }
 }
