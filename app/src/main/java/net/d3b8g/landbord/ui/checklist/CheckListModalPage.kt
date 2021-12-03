@@ -10,10 +10,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.customComponentsUI.ComponentsActions.closeKeyBoard
 import net.d3b8g.landbord.customComponentsUI.FragmentHeader
@@ -40,6 +37,8 @@ class CheckListModalPage @JvmOverloads constructor(
 
     private var fragmentInterface: CheckListInterface? = null
     private var targetId = 0
+
+    var doOnCLose = false
 
     init {
         val checkListDatabase = CheckListDatabase.getInstance(context).checkListDatabaseDao
@@ -88,12 +87,16 @@ class CheckListModalPage @JvmOverloads constructor(
     }
 
     private fun closeModalView(haveNewData: Boolean = false) {
-        this.startAnimation(
-            TranslateAnimation(0F, 0F, 0F, this.height.toFloat()).apply {
-            duration = 200
-            fillAfter = true
-        })
+        if (doOnCLose) return
+        else {
+            doOnCLose = true
+            scope.launch {
+                delay(1000)
+                doOnCLose = false
+            }
+        }
 
+        slideDown()
         nameCL.setText("")
         nameCL.clearFocus()
         nameLayout.error = null
@@ -102,15 +105,24 @@ class CheckListModalPage @JvmOverloads constructor(
         this.closeKeyBoard()
         (fragmentInterface as CheckListInterface).onCloseModalView()
         if (haveNewData) (fragmentInterface as CheckListInterface).updateRecyclerViewList()
+
+        this.visibility = View.GONE
     }
 
     //Interface blocks
     fun slideUp() {
-        val animationOpen = TranslateAnimation(0F,0F, this.height.toFloat(), 0f).apply {
-            duration = 200
+        this.startAnimation(
+            TranslateAnimation(0F,0F, this.height.toFloat(), 0f).apply {
+            duration = 300
             fillAfter = true
-        }
-        this.startAnimation(animationOpen)
+        })
+    }
+    private fun slideDown() {
+        this.startAnimation(
+            TranslateAnimation(0F, 0F, 0F, this.height.toFloat()).apply {
+                duration = 200
+                fillAfter = false
+            })
     }
 
     //Setup Modal Page Factory

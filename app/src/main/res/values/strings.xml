@@ -65,8 +65,22 @@
     <string name="delete">Delete</string>
     <string name="check_list_reminder_to_buy">Reminder to buy</string>
     <string name="dont_forget_check_app">Dont forget to check the app, you have some new content.</string>
-    <string name="notification_should_buy">"Reminder: You have to buy "</string>
+    <string name="notification_should_buy">You have to buy </string>
     <string name="notification_havent_today_record">You haven\'t tenant today, add any?</string>
     <string name="reminder">Reminder</string>
     <string name="notification_add_new_calendar">Add new information to calendar.</string>
+    <string name="bought_this">Did you buy this?</string>
+    <string name="yes">Yes</string>
+    <string name="bought_message">Your item will be reminded after 30 days.</string>
+    <string name="cancel">Cancel</string>
+    <string name="rent_cost_per_day">Cost of day rent</string>
+    <string name="notification_have_tenant">You have tenant today</string>
+    <string name="notification_reserved">reserved flat</string>
+    <string name="notification_reserved_with_deposit">reserved flat with deposit</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">Widget with reserved flats information</string>
+    <string name="flat_busy_by">flat reserved by</string>
+    <string name="to">to</string>
+    <string name="preview_reserved_widget_text">NY1 flat booked by Steve Jobs to 13 December.</string>
 </resources>

@@ -8,22 +8,32 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter
+import net.d3b8g.landbord.components.Converter.convertStringToDate
 import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.database.Checklists.CheckListData
+import net.d3b8g.landbord.database.Checklists.CheckListDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CheckListAdapter(val aboba: CheckListInterface) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CheckListAdapter(val checkListInterface: CheckListInterface) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val checkListItemArray: ArrayList<CheckListData> = ArrayList()
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SimpleDateFormat")
     fun updateList(dataList: ArrayList<CheckListData>): Boolean {
         checkListItemArray.clear()
-        checkListItemArray.addAll(dataList)
+
+        //do sort data by date
+        val sortedDataList = dataList.sortedBy { it.reminderDate.convertStringToDate() }
+        checkListItemArray.addAll(sortedDataList)
+
         notifyDataSetChanged()
         return checkListItemArray.size > 0
     }
@@ -42,9 +52,13 @@ class CheckListAdapter(val aboba: CheckListInterface) : RecyclerView.Adapter<Rec
 
     inner class CheckListAdapterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private lateinit var checkBox: CheckBox
+        private lateinit var checkListItem: CheckListData
+        private val scope = CoroutineScope(Dispatchers.IO)
+
         @SuppressLint("SetTextI18n", "SimpleDateFormat")
         fun bind(item: CheckListData) {
-            val checkBox = itemView.findViewById<CheckBox>(R.id.check_list_check_box)
+            checkBox = itemView.findViewById(R.id.check_list_check_box)
             val textOfRepeat = itemView.findViewById<TextView>(R.id.check_list_when_repeat)
             val changeRepeat = itemView.findViewById<Button>(R.id.check_list_change_repeat)
 
@@ -54,13 +68,24 @@ class CheckListAdapter(val aboba: CheckListInterface) : RecyclerView.Adapter<Rec
 
                 setOnClickListener {
                     if (checkBox.isChecked) {
-
+                        val nextRemindDate = Calendar.getInstance().run {
+                            add(Calendar.DATE, 30)
+                            time
+                        }
+                        checkListItem = CheckListData(
+                            id = item.id,
+                            title = item.title,
+                            isCompleted = item.isCompleted,
+                            isRepeatable = item.isRepeatable,
+                            reminderDate = SimpleDateFormat("yyyy-MM-dd").format(nextRemindDate)
+                        )
+                        showPopupBought()
                     }
                 }
             }
 
             changeRepeat.setOnClickListener {
-                aboba.openAddItemModalView(CheckListModalViewStates.EDIT_ITEM, item.id)
+                checkListInterface.openAddItemModalView(CheckListModalViewStates.EDIT_ITEM, item.id)
             }
 
             val parseReminderDate = parseDateToModel(item.reminderDate)
@@ -69,6 +94,30 @@ class CheckListAdapter(val aboba: CheckListInterface) : RecyclerView.Adapter<Rec
             } else item.reminderDate
 
             textOfRepeat.text = "${itemView.context.getString(R.string.check_list_reminder_to_buy)}: $dateReminder"
+        }
+
+        private fun showPopupBought() {
+            MaterialAlertDialogBuilder(itemView.context)
+                .setTitle(R.string.bought_this)
+                .setMessage(R.string.bought_message)
+                .setPositiveButton(R.string.yes) { dialog, _ ->
+                    scope.launch { updateCheckListItem() }
+                    dialog.dismiss()
+                }
+                .setNegativeButton(R.string.cancel) { dialog, _ ->
+                    checkBox.isChecked = false
+                    dialog.dismiss()
+                }
+                .show()
+        }
+
+        private fun updateCheckListItem() {
+            val checkListDatabase = CheckListDatabase.getInstance(itemView.context).checkListDatabaseDao
+
+            if (this::checkListItem.isInitialized) {
+                checkListDatabase.update(checkListItem)
+                checkListInterface.updateRecyclerViewList()
+            }
         }
     }
 }

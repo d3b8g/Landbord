@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <CheckBox
@@ -14,12 +14,13 @@
             android:layout_height="wrap_content"/>
         <ImageButton
             android:id="@+id/check_list_repeat"
+            android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
-            android:layout_gravity="center"
+            android:layout_toEndOf="@id/check_list_check_box"
             android:background="@drawable/ic_repeat_24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/check_list_item_next_repeat"
         android:background="@drawable/background_comment"

@@ -1,9 +1,15 @@
 package net.d3b8g.landbord
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -57,6 +63,21 @@ class MainActivity : AppCompatActivity() {
             if (it) navView.visibility = View.GONE
             else navView.visibility = View.VISIBLE
         })
+
+        if (intent.action == "CALL_BODY") {
+            val db = BookingDatabase.getInstance(this).bookedDatabaseDao
+            lifecycleScope.launch(Dispatchers.IO) {
+                val phoneToCall = db.getById(intent.getIntExtra("BOOKING_ID", 1)).userPhone
+
+                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall"))
+                if (ContextCompat.checkSelfPermission(this@MainActivity,
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.CALL_PHONE), 1015)
+                } else {
+                    startActivity(intent)
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -86,5 +107,4 @@ class MainActivity : AppCompatActivity() {
         PaymentsDetails.billingProcessor?.release()
         super.onDestroy()
     }
-
 }

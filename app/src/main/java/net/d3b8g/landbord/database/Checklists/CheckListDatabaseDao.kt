@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import net.d3b8g.landbord.components.Converter
 
 @Dao
 interface CheckListDatabaseDao {
@@ -28,4 +29,7 @@ interface CheckListDatabaseDao {
 
     @Query("SELECT * from checklists WHERE reminderDate = :date")
     fun getTodayList(date: String): List<CheckListData>
+
+    @Query("SELECT * from checklists WHERE reminderDate BETWEEN :dateStart AND :dateEnd")
+    fun getThisMonthItems(dateStart: String, dateEnd: String): List<CheckListData>
 }

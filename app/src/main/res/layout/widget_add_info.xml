@@ -90,6 +90,23 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_marginTop="6dp"
+            android:id="@+id/filledRentCostField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_money"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/rent_cost_per_day">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fieldRentCost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="32"
+                android:inputType="phone"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginTop="6dp"
             android:id="@+id/filledUsernameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

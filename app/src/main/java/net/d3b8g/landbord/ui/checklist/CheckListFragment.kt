@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.appLog
 import net.d3b8g.landbord.customComponentsUI.ComponentsActions.setBackgroundTransparent
 import net.d3b8g.landbord.customComponentsUI.ComponentsActions.setBackgroundTransparentVisible
 import net.d3b8g.landbord.database.Checklists.CheckListDatabase
@@ -64,6 +65,7 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list), CheckListInter
                 visibility = View.VISIBLE
                 setFragmentInterfaceCallback(this@CheckListFragment)
                 setupModalPageState(modalState, selectedId)
+
                 slideUp()
             }
             checkListAddNewBtn.visibility = View.GONE
@@ -72,7 +74,6 @@ class CheckListFragment : Fragment(R.layout.fragment_check_list), CheckListInter
 
     override fun onCloseModalView() {
         with(binding) {
-            addNewModal.visibility = View.GONE
             checkListAddNewBtn.visibility = View.VISIBLE
             checkListLayout.setBackgroundTransparentVisible()
         }

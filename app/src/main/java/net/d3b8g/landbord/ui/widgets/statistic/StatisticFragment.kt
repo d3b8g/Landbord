@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.parseDateToModel
+import net.d3b8g.landbord.components.appLog
 import net.d3b8g.landbord.database.Booking.BookingDatabase
+import net.d3b8g.landbord.database.Checklists.CheckListDatabase
 import net.d3b8g.landbord.databinding.WidgetStatisticsBinding
 import java.util.*
 
@@ -24,23 +26,38 @@ class StatisticFragment : Fragment(R.layout.widget_statistics) {
         binding = WidgetStatisticsBinding.bind(view)
 
         val db = BookingDatabase.getInstance(requireContext()).bookedDatabaseDao
-        val viewModelFactory = StatisticViewModelFactory(db, requireActivity().application)
-        homeViewModel = ViewModelProvider(this, viewModelFactory).get(StatisticViewModel::class.java)
+        val dbCL = CheckListDatabase.getInstance(requireContext()).checkListDatabaseDao
+        val viewModelFactory = StatisticViewModelFactory(db, dbCL, requireActivity().application)
+        homeViewModel = ViewModelProvider(this, viewModelFactory)[StatisticViewModel::class.java]
 
         homeViewModel.statisticsBookingData.observe(viewLifecycleOwner, {
             binding.apply {
-
                 var counterBusyDays = 0
                 it.forEachIndexed { _ , bookingData ->
-                    val res = parseDateToModel(bookingData.bookingEnd).day.toInt() + 1 - parseDateToModel(bookingData.bookingDate).day.toInt()
+                    val currentMonthInt = Calendar.getInstance().get(Calendar.MONTH) + 1
+                    val res: Int = if (parseDateToModel(bookingData.bookingEnd).month.toInt() == currentMonthInt &&
+                        parseDateToModel(bookingData.bookingDate).month.toInt() == currentMonthInt) {
+                        parseDateToModel(bookingData.bookingEnd).day.toInt() + 1 - parseDateToModel(bookingData.bookingDate).day.toInt()
+                    } else {
+                        // If started or ended at another month
+                        if (parseDateToModel(bookingData.bookingDate).month.toInt() != currentMonthInt) {
+                            //Started by another month
+                            parseDateToModel(bookingData.bookingEnd).day.toInt()
+                        } else {
+                            maxDaysMonth - parseDateToModel(bookingData.bookingDate).day.toInt() + 1
+                        }
+                    }
                     counterBusyDays += res
                 }
 
-                bookedInTt.text = "${getString(R.string.booked_in)} ${correctMonthName()}:"
-                bookedInCount.text = counterDays(counterBusyDays)
 
-                busyInTt.text = "${getString(R.string.busy_in_tt)} ${correctMonthName()}:"
-                busyInCount.text = counterDays(counterBusyDays)
+            }
+        })
+
+        homeViewModel.statisticsBuyItems.observe(viewLifecycleOwner, {
+            with(binding) {
+                busyInTt.text = "${getString(R.string.notification_should_buy)} ${correctMonthName()}:"
+                //busyInCount.text = shouldBuyItems.toString()
             }
         })
     }

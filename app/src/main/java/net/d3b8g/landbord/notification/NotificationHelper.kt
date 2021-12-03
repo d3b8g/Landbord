@@ -6,6 +6,7 @@ import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import androidx.core.app.NotificationCompat
 import net.d3b8g.landbord.MainActivity
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.HelperComponents
@@ -51,7 +52,7 @@ object NotificationHelper {
         }
     }
 
-    fun Context.createNotification(data: List<Any>) {
+    fun Context.createNotification(data: List<Any>?) {
         val notificationChannelId = "1350"
 
         val builder: Notification.Builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Notification.Builder(
@@ -66,29 +67,56 @@ object NotificationHelper {
         var notificationContentText = ""
         var notificationContentTitle = ""
 
-        when(data[0]::class.java.simpleName) {
-            CheckListData::class.java.simpleName -> {
+        if (data != null && data[0]::class.java.simpleName == BookingData::class.java.simpleName) {
+
+            val openCorrectBookingSnooze = Intent(this, MainActivity::class.java).apply {
+                action = "CALL_BODY"
+                putExtra("BOOKING_ID", (data[0] as BookingData).id)
+            }
+            val pendingIntentSnooze =
+                PendingIntent.getBroadcast(this, 0, openCorrectBookingSnooze, pendingIntentFlag)
+
+            val notificationAction = NotificationCompat.Action.Builder(
+                R.drawable.ic_contact_phone_24,
+                getString(R.string.call),
+                pendingIntentSnooze
+            ) as Notification.Action
+
+
+            notificationContentTitle = getString(R.string.notification_have_tenant)
+            (data[0] as BookingData).also {
+                notificationContentText = if (it.deposit > 0)
+                 "${it.username} ${getString(R.string.notification_reserved)}"
+                 else "${it.username} ${getString(R.string.notification_reserved_with_deposit)} ${it.deposit}"
+            }
+
+            builder
+                .setContentTitle(notificationContentTitle)
+                .setContentText(notificationContentText)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(Notification.PRIORITY_HIGH) // for under android 26 compatibility
+                .addAction(notificationAction)
+                .build()
+        } else {
+            if (data != null && data[0]::class.java.simpleName == CheckListData::class.java.simpleName) {
                 notificationContentText = "${getString(R.string.notification_should_buy)} " +
                         (data as List<CheckListData>).joinToString(", ") { it.title }
                 notificationContentTitle = getString(R.string.reminder)
-            }
-            BookingData::class.java.simpleName -> {
+
+            } else {
                 notificationContentText = getString(R.string.notification_havent_today_record)
                 notificationContentTitle = getString(R.string.notification_add_new_calendar)
             }
-            else -> {
-                notificationContentText = getString(R.string.dont_forget_check_app)
-            }
+
+            builder
+                .setContentTitle(notificationContentTitle)
+                .setContentText(notificationContentText)
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(Notification.PRIORITY_HIGH) // for under android 26 compatibility
+                .build()
         }
-
-
-        builder
-            .setContentTitle(notificationContentTitle)
-            .setContentText(notificationContentText)
-            .setContentIntent(pendingIntent)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setPriority(Notification.PRIORITY_HIGH) // for under android 26 compatibility
-            .build()
 
         // depending on the Android API that we're dealing with we will have
         // to use a specific method to create the notification

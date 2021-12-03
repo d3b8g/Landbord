@@ -1,7 +1,7 @@
 package net.d3b8g.landbord.components
 
 import android.annotation.SuppressLint
-import net.d3b8g.landbord.components.Converter.covertStringToDate
+import net.d3b8g.landbord.components.Converter.convertStringToDate
 import net.d3b8g.landbord.database.Booking.BookingData
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,8 +34,8 @@ object DateHelper {
 
     fun getCloserDate(dataArray: List<BookingData>, closerDate: Date): Int? {
         for (i in dataArray) {
-            val dateStart = i.bookingDate.covertStringToDate()
-            val dateEnd = i.bookingEnd.covertStringToDate()
+            val dateStart = i.bookingDate.convertStringToDate()
+            val dateEnd = i.bookingEnd.convertStringToDate()
 
             if ((closerDate.after(dateStart) && closerDate.before(dateEnd)) ||
                 (closerDate == dateStart || closerDate == dateEnd)) return i.id

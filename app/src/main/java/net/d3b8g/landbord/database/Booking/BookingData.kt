@@ -16,6 +16,9 @@ data class BookingData(
     @ColumnInfo(name = "deposit")
     val deposit: Int,
 
+    @ColumnInfo(name = "day_rent_cost")
+    val rentCostPerDay: Int,
+
     @ColumnInfo(name = "username")
     val username: String,
 

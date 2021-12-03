@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.cache.AppCache.deleteBookingInfoByDate
 import net.d3b8g.landbord.components.Converter.convertDate
-import net.d3b8g.landbord.components.Converter.covertStringToDate
+import net.d3b8g.landbord.components.Converter.convertStringToDate
 import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.databinding.WidgetBookingInfoBinding
@@ -71,7 +71,7 @@ class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
                     }
                     model.deleteUserBooking.value = true
                     //Remove cache
-                    bookingInfoModel.date.covertStringToDate().deleteBookingInfoByDate()
+                    bookingInfoModel.date.convertStringToDate().deleteBookingInfoByDate()
                 }
             })
 
@@ -86,7 +86,6 @@ class BookingInfoFragment : Fragment(R.layout.widget_booking_info) {
                 changeViewInfoLayout.visibility = View.GONE
                 updateInfo.visibility = View.VISIBLE
             }
-
         }
     }
 }
