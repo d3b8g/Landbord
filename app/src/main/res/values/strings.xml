@@ -77,10 +77,10 @@
     <string name="notification_have_tenant">You have tenant today</string>
     <string name="notification_reserved">reserved flat</string>
     <string name="notification_reserved_with_deposit">reserved flat with deposit</string>
-    <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">Widget with reserved flats information</string>
+    <string name="app_widget_description">(Beta) Widget with reserved flats information</string>
     <string name="flat_busy_by">flat reserved by</string>
     <string name="to">to</string>
-    <string name="preview_reserved_widget_text">NY1 flat booked by Steve Jobs to 13 December.</string>
+    <string name="preview_reserved_widget_text">NY1 flat reserved by Steve Jobs to 13 December</string>
+    <string name="copy_number_to_clipboard">Number copied to clipboard. App havent rights to call.</string>
 </resources>

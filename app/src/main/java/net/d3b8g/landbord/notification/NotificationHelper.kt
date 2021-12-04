@@ -64,8 +64,8 @@ object NotificationHelper {
             PendingIntent.getActivity(this, 0, notificationIntent, pendingIntentFlag)
         }
 
-        var notificationContentText = ""
-        var notificationContentTitle = ""
+        var notificationContentText: String
+        val notificationContentTitle: String
 
         if (data != null && data[0]::class.java.simpleName == BookingData::class.java.simpleName) {
 

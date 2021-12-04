@@ -78,4 +78,10 @@
     <string name="notification_reserved">зарезервировал квартиру</string>
     <string name="notification_reserved_with_deposit">зарезервировал квартиру с депозитом</string>
     <string name="notification_should_buy">Ты должен купить</string>
+    <string name="add_widget">Добавить виджет</string>
+    <string name="app_widget_description">(Beta) Виджет с информацией брони квартиры</string>
+    <string name="flat_busy_by">"квартира забронирована "</string>
+    <string name="to">до</string>
+    <string name="preview_reserved_widget_text">Пушкинская квартира забронирвоана Стивом Джобсом до 13 декабря.</string>
+    <string name="copy_number_to_clipboard">Номер скопирован. У приложения нет прав на звонок.</string>
 </resources>
