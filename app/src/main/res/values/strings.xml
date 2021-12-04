@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Landbord</string>
+    <string name="app_name">Landlord - app for rents management</string>
     <string name="title_home">Home</string>
     <string name="title_income">Income</string>
     <string name="title_add">Add</string>
@@ -47,7 +47,7 @@
     <string name="checklist">Check List</string>
     <string name="hide_tab_check_list">Hide tab Check List</string>
     <string name="empty_data_on_check_list">You haven`t item in check list.</string>
-    <string name="check_list_next_repeat">Next repeat on</string>
+    <string name="check_list_next_repeat">Next repeat on: </string>
     <string name="add_new_flat">Add new flat</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_send_time">Change time of receipt notifications:</string>
@@ -56,4 +56,31 @@
     <string name="notification_enable">Notifications enabled</string>
     <string name="notification_center">Notifications center</string>
     <string name="add_new_check_list">Add new item</string>
+    <string name="become_our_sponsor">Become our sponsor for 5$</string>
+    <string name="be_our_sponsor">Be our sponsor</string>
+    <string name="trial_banner_text">To hide this banner and prevent show advertisements in app become our app-sponsor. Just for 5$ you will make smile app developers.</string>
+    <string name="payments_error">Payments error. Please try later.</string>
+    <string name="error_name_check_list">Cant contain less than 3 char</string>
+    <string name="edit_item">Edit item</string>
+    <string name="delete">Delete</string>
+    <string name="check_list_reminder_to_buy">Reminder to buy</string>
+    <string name="dont_forget_check_app">Dont forget to check the app, you have some new content.</string>
+    <string name="notification_should_buy">You have to buy </string>
+    <string name="notification_havent_today_record">You haven\'t tenant today, add any?</string>
+    <string name="reminder">Reminder</string>
+    <string name="notification_add_new_calendar">Add new information to calendar.</string>
+    <string name="bought_this">Did you buy this?</string>
+    <string name="yes">Yes</string>
+    <string name="bought_message">Your item will be reminded after 30 days.</string>
+    <string name="cancel">Cancel</string>
+    <string name="rent_cost_per_day">Cost of day rent</string>
+    <string name="notification_have_tenant">You have tenant today</string>
+    <string name="notification_reserved">reserved flat</string>
+    <string name="notification_reserved_with_deposit">reserved flat with deposit</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">(Beta) Widget with reserved flats information</string>
+    <string name="flat_busy_by">flat reserved by</string>
+    <string name="to">to</string>
+    <string name="preview_reserved_widget_text">NY1 flat reserved by Steve Jobs to 13 December</string>
+    <string name="copy_number_to_clipboard">Number copied to clipboard. App havent rights to call.</string>
 </resources>

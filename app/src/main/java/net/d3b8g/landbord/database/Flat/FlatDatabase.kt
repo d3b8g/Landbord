@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import net.d3b8g.landbord.database.Booking.BookingData
+import net.d3b8g.landbord.database.Checklists.CheckListData
 
-@Database(entities = [BookingData::class, FlatData::class], version = 1, exportSchema = false)
+@Database(entities = [BookingData::class, FlatData::class, CheckListData::class], version = 1, exportSchema = false)
 abstract class FlatDatabase : RoomDatabase() {
 
     abstract val flatDatabaseDao: FlatDatabaseDao
@@ -24,7 +25,7 @@ abstract class FlatDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         ct.applicationContext,
                         FlatDatabase::class.java,
-                        "flat_database"
+                        "landlord13_database"
                     )
                         .fallbackToDestructiveMigration()
                         .build()

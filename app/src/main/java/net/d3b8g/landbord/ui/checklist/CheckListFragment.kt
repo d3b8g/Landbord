@@ -3,51 +3,79 @@ package net.d3b8g.landbord.ui.checklist
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.appLog
+import net.d3b8g.landbord.customComponentsUI.ComponentsActions.setBackgroundTransparent
+import net.d3b8g.landbord.customComponentsUI.ComponentsActions.setBackgroundTransparentVisible
+import net.d3b8g.landbord.database.Checklists.CheckListDatabase
 import net.d3b8g.landbord.databinding.FragmentCheckListBinding
-import net.d3b8g.landbord.models.CheckListItemModel
 
-class CheckListFragment : Fragment(R.layout.fragment_check_list) {
+class CheckListFragment : Fragment(R.layout.fragment_check_list), CheckListInterface {
 
-    private lateinit var checklistViewModel: CheckListViewModel
     private lateinit var binding: FragmentCheckListBinding
-    private lateinit var adapter: CheckListAdapter
+    private lateinit var adapterCL: CheckListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentCheckListBinding.bind(view)
-        checklistViewModel = ViewModelProvider(this)[CheckListViewModel::class.java]
+        adapterCL = CheckListAdapter(this)
 
-        adapter = CheckListAdapter()
-        binding.checkListRcv.apply {
-            adapter = adapter
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            setHasFixedSize(false)
+        with(binding) {
+            checkListRcv.apply {
+                adapter = adapterCL
+                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                setHasFixedSize(false)
+            }
+
+            checkListAddNew.setOnClickListener { openAddItemModalView(CheckListModalViewStates.ADD_NEW) }
+            checkListAddNewBtn.setOnClickListener { openAddItemModalView(CheckListModalViewStates.ADD_NEW) }
         }
 
-        checklistViewModel.checkList(requireContext()).observe(viewLifecycleOwner, {
-            if (it.size > 0 && binding.checklistBlockAssert.visibility == View.VISIBLE) {
-                binding.checklistBlockAssert.visibility = View.GONE
-            }
-            adapter.updateList(it)
-        })
-
+        updateRecyclerViewList()
     }
 
-    private fun convertArrayToJSONString(list: ArrayList<CheckListItemModel>): String {
-        //putString("check_list_prefs", convertArrayToJSONString(aboab))
-        val correctString = StringBuilder()
-        list.forEachIndexed { index, checkListItemModel ->
-            correctString.append("{")
-            correctString.append("\"title\":\"${checkListItemModel.title}\",")
-            correctString.append("\"isCompleted\":${checkListItemModel.isCompleted},")
-            correctString.append("\"isRepeatable\":${checkListItemModel.isRepeatable},")
-            correctString.append("\"nextRepeat\":\"${checkListItemModel.nextRepeat}\"")
-            if (index != list.size - 1) correctString.append("},")
-            else correctString.append("}")
+    override fun updateRecyclerViewList() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val checkListDatabase = CheckListDatabase.getInstance(requireContext()).checkListDatabaseDao
+            val checkListItems = ArrayList(checkListDatabase.getAllItems())
+
+            withContext(Dispatchers.Main) {
+                if (adapterCL.updateList(checkListItems)) {
+                    binding.checklistBlockAssert.visibility = View.GONE
+                    binding.checkListRcv.visibility = View.VISIBLE
+                    binding.checkListAddNewBtn.visibility = View.VISIBLE
+                } else {
+                    binding.checklistBlockAssert.visibility = View.VISIBLE
+                    binding.checkListRcv.visibility = View.GONE
+                    binding.checkListAddNewBtn.visibility = View.GONE
+                }
+            }
         }
-        return "[$correctString]"
+    }
+
+    override fun openAddItemModalView(modalState: CheckListModalViewStates, selectedId: Int) {
+        with(binding) {
+            checkListLayout.setBackgroundTransparent()
+            addNewModal.apply {
+                visibility = View.VISIBLE
+                setFragmentInterfaceCallback(this@CheckListFragment)
+                setupModalPageState(modalState, selectedId)
+
+                slideUp()
+            }
+            checkListAddNewBtn.visibility = View.GONE
+        }
+    }
+
+    override fun onCloseModalView() {
+        with(binding) {
+            checkListAddNewBtn.visibility = View.VISIBLE
+            checkListLayout.setBackgroundTransparentVisible()
+        }
     }
 }

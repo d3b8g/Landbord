@@ -1,4 +1,4 @@
-package net.d3b8g.landbord.widgets.add_info
+package net.d3b8g.landbord.ui.widgets.add_info
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
-import net.d3b8g.landbord.components.Converter.covertStringToDate
+import net.d3b8g.landbord.components.Converter.convertStringToDate
 import net.d3b8g.landbord.components.DateHelper
 import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
@@ -56,10 +56,10 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
             flatId = getFlatId(),
             bookingDate = calendarDate,
             deposit = binding.fieldDeposit.text!!.toString().toInt(),
+            rentCostPerDay = binding.fieldRentCost.text!!.toString().toInt(),
             username = binding.fieldUsername.text!!.toString(),
             userPhone = binding.fieldPhone.text!!.toString().toLong(),
-            //bookingEnd = binding.fieldDateTo.text.toString(),
-            bookingEnd = "2021-11-14",
+            bookingEnd = binding.widgetAddDatePicker.pickedDateString,
             bookingChatLink = binding.fieldChatLink.text!!.toString()
         )
         val insertData = db.insert(bookingData)
@@ -72,8 +72,8 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
     private fun isDateFree(dateStart: String, dateEnd: String): Boolean {
         val data = db.getListByMonth("${dateStart.dropLast(2)}01","${dateEnd.dropLast(2)}31")
         return if (!data.isNullOrEmpty()) {
-            val closerDateIdFirst = DateHelper.getCloserDate(data, dateStart.covertStringToDate())
-            val closerDateIdSecond = DateHelper.getCloserDate(data, dateEnd.covertStringToDate())
+            val closerDateIdFirst = DateHelper.getCloserDate(data, dateStart.convertStringToDate())
+            val closerDateIdSecond = DateHelper.getCloserDate(data, dateEnd.convertStringToDate())
             //return if we havent closer date on Start/End
             closerDateIdFirst != null && closerDateIdSecond != null
         } else true
@@ -118,12 +118,10 @@ class AddInfoFragment : Fragment(R.layout.widget_add_info) {
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                //if (isDateFree(model.chosenCalendarDate.value!!, binding.fieldDateTo.text.toString())) {
-                if (isDateFree(model.chosenCalendarDate.value!!,"2021-11-31")) {
-                    canUpdate = true
-                } else {
+                val chosenDate = model.chosenCalendarDate.value!!
+                canUpdate = isDateFree(chosenDate,chosenDate.dropLast(2)+"31")
+                if (!canUpdate) {
                     withContext(Dispatchers.Main) {
-                        canUpdate = false
                         Snackbar.make(
                             binding.root,
                             getString(R.string.dates_busy) ,

@@ -23,9 +23,6 @@ interface BookingDatabaseDao {
     @Query("SELECT * from booking WHERE id = :id")
     fun getById(id: Int): BookingData
 
-    @Query("SELECT * from booking WHERE booking_date = :date LIMIT 1")
-    fun getByDate(date: String): BookingData
-
     @Query("SELECT * from booking WHERE booking_date BETWEEN :dateStart AND :dateEnd OR booking_end BETWEEN :dateStart AND :dateEnd")
     fun getListByDate(dateStart: String, dateEnd: String): List<BookingData>?
 

@@ -21,13 +21,14 @@ import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.FragmentHomeBinding
 import net.d3b8g.landbord.models.BookingInfoModel
+import net.d3b8g.landbord.payments.PaymentsDetails.isSponsor
 import net.d3b8g.landbord.ui.add.AddViewModel
 import net.d3b8g.landbord.ui.add.AddViewState
-import net.d3b8g.landbord.widgets.add_info.AddInfoFragment
-import net.d3b8g.landbord.widgets.add_info.AddInfoViewModel
-import net.d3b8g.landbord.widgets.booking.BookingInfoFragment
-import net.d3b8g.landbord.widgets.booking.BookingInfoViewModel
-import net.d3b8g.landbord.widgets.statistic.StatisticFragment
+import net.d3b8g.landbord.ui.widgets.add_info.AddInfoFragment
+import net.d3b8g.landbord.ui.widgets.add_info.AddInfoViewModel
+import net.d3b8g.landbord.ui.widgets.booking.BookingInfoFragment
+import net.d3b8g.landbord.ui.widgets.booking.BookingInfoViewModel
+import net.d3b8g.landbord.ui.widgets.statistic.StatisticFragment
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -111,6 +112,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             addViewModel.state.value = AddViewState.ADD_NEW_FLAT
             findNavController().navigate(navigation)
         }
+
+        isSponsor.observe(viewLifecycleOwner, {
+            if (it) binding.homePaymentsWidget.visibility = View.GONE
+            else binding.homePaymentsWidget.visibility = View.VISIBLE
+        })
     }
 
     private fun generateStatisticsWidget() {

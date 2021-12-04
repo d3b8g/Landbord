@@ -1,2 +1,2 @@
-rootProject.name = "Landbord"
+rootProject.name = "Landlord - app for rents management"
 include ':app'

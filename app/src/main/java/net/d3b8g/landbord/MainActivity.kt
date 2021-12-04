@@ -1,9 +1,15 @@
 package net.d3b8g.landbord
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -13,11 +19,12 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.d3b8g.landbord.components.getNotificationStatus
 import net.d3b8g.landbord.database.Booking.BookingDatabase
 import net.d3b8g.landbord.database.Flat.FlatDatabase
 import net.d3b8g.landbord.databinding.ActivityMainBinding
 import net.d3b8g.landbord.notification.NotificationHelper.delayedNotificationAlarm
-import net.d3b8g.landbord.notification.getNotificationStatus
+import net.d3b8g.landbord.payments.PaymentsDetails
 import net.d3b8g.landbord.ui.add.AddViewModel
 import net.d3b8g.landbord.ui.add.AddViewState
 
@@ -51,6 +58,26 @@ class MainActivity : AppCompatActivity() {
                 navView.menu.findItem(R.id.navigation_checklist).isVisible = false
             }
         }
+
+        addViewModel.tabbarHide.observe(this, {
+            if (it) navView.visibility = View.GONE
+            else navView.visibility = View.VISIBLE
+        })
+
+        if (intent.action == "CALL_BODY") {
+            val db = BookingDatabase.getInstance(this).bookedDatabaseDao
+            lifecycleScope.launch(Dispatchers.IO) {
+                val phoneToCall = db.getById(intent.getIntExtra("BOOKING_ID", 1)).userPhone
+
+                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall"))
+                if (ContextCompat.checkSelfPermission(this@MainActivity,
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.CALL_PHONE), 1015)
+                } else {
+                    startActivity(intent)
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -77,6 +104,7 @@ class MainActivity : AppCompatActivity() {
                 bookingBase.deleteAll()
             }
         }
+        PaymentsDetails.billingProcessor?.release()
         super.onDestroy()
     }
 }

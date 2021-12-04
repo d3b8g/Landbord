@@ -6,4 +6,6 @@ import androidx.lifecycle.ViewModel
 class AddViewModel : ViewModel() {
 
     val state = MutableLiveData<AddViewState>()
+
+    val tabbarHide = MutableLiveData<Boolean>(false)
 }

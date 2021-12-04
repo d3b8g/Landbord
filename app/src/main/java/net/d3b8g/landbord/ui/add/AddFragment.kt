@@ -1,3 +1,5 @@
+@file:Suppress("NonExhaustiveWhenStatementMigration")
+
 package net.d3b8g.landbord.ui.add
 
 import android.os.Bundle
@@ -16,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.d3b8g.landbord.R
 import net.d3b8g.landbord.components.Converter.getTodayDate
+import net.d3b8g.landbord.components.Converter.getTodayUnix
 import net.d3b8g.landbord.components.Converter.parseDateToModel
 import net.d3b8g.landbord.database.Booking.BookingData
 import net.d3b8g.landbord.database.Booking.BookingDatabase
@@ -50,7 +53,11 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                 binding.closeAddFragment.visibility = View.VISIBLE
             }
             AddViewState.NEW_USER -> {
-                // Nothing to do, just went
+                val limitDate = getTodayUnix() + ((86400 * 7) * 1000)
+                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
+                    putLong("ads_limit", limitDate)
+                }
+                addViewModel.tabbarHide.value = true
             }
         }
 
@@ -94,6 +101,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         lifecycleScope.launch {
             addNewFlat()
         }
+
+        addViewModel.tabbarHide.value = false
         val navigation = AddFragmentDirections.actionNavigationAddToNavigationHome()
         findNavController().navigate(navigation)
     }
@@ -148,6 +157,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                             flatId = 1,
                             bookingDate = "${yearMonth}-$i",
                             deposit = (1000..2000).random(),
+                            rentCostPerDay = (1000..2000).random(),
                             username = "Vasya Ivanov $i",
                             userPhone = 89116487019,
                             bookingEnd = "${yearMonth}-${i+0}",
@@ -163,6 +173,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                             flatId = 1,
                             bookingDate = "${yearMonth}-$i",
                             deposit = (1000..2000).random(),
+                            rentCostPerDay = (1000..2000).random(),
                             username = "Vasya Ivanov $i",
                             userPhone = 89116487019,
                             bookingEnd = "${yearMonth}-${i+0}",

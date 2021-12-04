@@ -6,14 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import net.d3b8g.landbord.components.Converters
+import net.d3b8g.landbord.database.Checklists.CheckListData
 import net.d3b8g.landbord.database.Flat.FlatData
 
-@Database(entities = [BookingData::class, FlatData::class], version = 1, exportSchema = false)
+@Database(entities = [BookingData::class, FlatData::class, CheckListData::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class BookingDatabase : RoomDatabase() {
 
     abstract val bookedDatabaseDao: BookingDatabaseDao
-
 
     companion object {
         @Volatile
@@ -27,7 +27,7 @@ abstract class BookingDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         ct.applicationContext,
                         BookingDatabase::class.java,
-                        "flat_database"
+                        "landlord13_database"
                     )
                         .fallbackToDestructiveMigration()
                         .build()

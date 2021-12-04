@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="fragmentsHeader">
-        <attr name="headerTitle" format="string"/>
+        <attr name="headerTitle" format="string" />
+    </declare-styleable>
+    <declare-styleable name="AppWidgetAttrs">
+        <attr name="appWidgetPadding" format="dimension" />
+        <attr name="appWidgetInnerRadius" format="dimension" />
+        <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
 </resources>

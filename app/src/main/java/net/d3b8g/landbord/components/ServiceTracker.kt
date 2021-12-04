@@ -1,4 +1,4 @@
-package net.d3b8g.landbord.notification
+package net.d3b8g.landbord.components
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -62,7 +62,8 @@ fun setNotificationDelay(context: Context, time: String) {
     }
 }
 
-fun getNotificationDelay(context: Context): String = getPreferences(context).getString(notificationDelayedAt, "10:00")!!
+fun getNotificationDelay(context: Context): String = getPreferences(context).getString(
+    notificationDelayedAt, "10:00")!!
 
 private fun getPreferences(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 

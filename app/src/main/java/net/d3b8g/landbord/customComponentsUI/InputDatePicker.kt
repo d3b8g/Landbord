@@ -12,6 +12,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import net.d3b8g.landbord.MainActivity
 import net.d3b8g.landbord.R
+import net.d3b8g.landbord.components.Converter.getTodayDate
 import java.text.SimpleDateFormat
 
 @SuppressLint("SimpleDateFormat")
@@ -25,7 +26,10 @@ class InputDatePicker @JvmOverloads constructor(
     private val input: TextInputEditText
     private val fragmentParent: FragmentManager = (context as MainActivity).supportFragmentManager
 
-    var pickedDate: Long = 0
+    private var pickedDate: Long = 0
+    var pickedDateString: String = "2021-00-00"
+
+    private var isOpenPicker = false
 
     init {
         inflate(context , R.layout.input_date_picker , this)
@@ -34,28 +38,46 @@ class InputDatePicker @JvmOverloads constructor(
         filledInput = findViewById(R.id.filledInputDatePicker)
         input = findViewById(R.id.fieldInputDatePicker)
 
-        input.onFocusChangeListener = OnFocusChangeListener { _ , hasFocus ->
+        input.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            openDatePicker(hasFocus)
+        }
+        input.setOnClickListener { openDatePicker() }
+    }
 
+    private fun openDatePicker(hasFocus: Boolean = true) {
+        if (!isOpenPicker && hasFocus) {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(resources.getString(R.string.date_to))
                 .build()
 
-            if (hasFocus) {
-                filledInput.hint = resources.getString(R.string.date_pattern_format)
-                datePicker.show(fragmentParent , "DateOfEnd")
-                datePicker.addOnPositiveButtonClickListener {
+            filledInput.hint = resources.getString(R.string.date_pattern_format)
+            datePicker.apply {
+                show(fragmentParent , "DateOfEnd")
+                addOnPositiveButtonClickListener {
                     val chosenDate = SimpleDateFormat("yyyy-MM-dd").format(it)
                     pickedDate = it
+                    pickedDateString = chosenDate
                     input.setText(chosenDate)
                 }
-                datePicker.addOnNegativeButtonClickListener {
+                addOnNegativeButtonClickListener {
                     it.clearFocus()
                 }
+                addOnDismissListener {
+                    input.clearFocus()
+                    isOpenPicker = false
+                }
             }
+            isOpenPicker = true
         }
     }
 
-    fun isDateCurrent(selectedDate: String): Boolean =
+    fun clearInput() {
+        input.setText("")
+        input.clearFocus()
+        filledInput.error = null
+    }
+
+    fun isDateCurrent(selectedDate: String = getTodayDate()): Boolean =
         when (true) {
             pickedDate == 0L -> {
                 filledInput.error = resources.getString(R.string.field_empty)

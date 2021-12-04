@@ -1,4 +1,4 @@
-package net.d3b8g.landbord.widgets.add_info
+package net.d3b8g.landbord.ui.widgets.add_info
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

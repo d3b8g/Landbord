@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/shaped_background_modal_page"
     android:layout_width="match_parent"
-    android:layout_margin="4dp"
+    android:layout_margin="8dp"
     android:padding="8dp"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <net.d3b8g.landbord.customComponentsUI.FragmentHeader
@@ -31,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLength="32"
+            android:singleLine="true"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,7 +43,29 @@
         android:layout_height="wrap_content" />
 
     <CheckBox
-        android:text="Is repeatble"
+        android:id="@+id/checkListIsRepeatable"
+        android:text="Is repeatable"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/checkListSaveNew"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/checkListDelete"
+        android:text="@string/delete"
+        android:visibility="gone"
+        android:textAllCaps="false"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:textColor="@color/colorRed"
         android:layout_marginEnd="12dp"
         android:layout_marginStart="12dp"
         android:layout_width="match_parent"

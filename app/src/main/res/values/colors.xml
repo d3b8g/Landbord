@@ -10,4 +10,12 @@
     <color name="colorGray">#f2f3f5</color>
     <color name="colorMoreGray">@android:color/darker_gray</color>
     <color name="colorRed">#ff4040</color>
+
+    <color name="textColor">@color/black</color>
+    <color name="widgetBackground">@color/colorGray</color>
+    <color name="layoutBackground">@color/white</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
 </resources>

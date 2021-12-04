@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid android:color="@color/colorGray"/>
+            <solid android:color="@color/widgetBackground"/>
             <corners android:bottomRightRadius="16dp"
                 android:bottomLeftRadius="16dp"
                 android:topLeftRadius="16dp"

@@ -3,6 +3,7 @@ package net.d3b8g.landbord.ui.notifications
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import net.d3b8g.landbord.R
 
@@ -23,8 +24,9 @@ class NotificationsAdapter(private val notificationsList: NotificationsAdapterMo
 
     class NotificationsAdapterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val notificationTimeReceive: TextView = itemView.findViewById(R.id.notification_cell_date_receive)
         fun bind(item: NotificationsAdapterModel) {
-
+            notificationTimeReceive.text = item.date
         }
     }
 }
